@@ -466,8 +466,20 @@ def report():
 # ─────────────────────────────────────────────────────────────
 # MAIN
 # ─────────────────────────────────────────────────────────────
+# if __name__ == "__main__":
+#     print("\n" + "=" * 55)
+#     print("  Fraud Detection API  –  http://localhost:5000")
+#     print("=" * 55 + "\n")
+#     app.run(debug=True, host="localhost", port=5000)
+
+
+import os
+
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))  # Render provides PORT
+
     print("\n" + "=" * 55)
-    print("  Fraud Detection API  –  http://localhost:5000")
+    print(f"  Fraud Detection API  –  Running on port {port}")
     print("=" * 55 + "\n")
-    app.run(debug=True, host="localhost", port=5000)
+
+    app.run(debug=False, host="0.0.0.0", port=port)
