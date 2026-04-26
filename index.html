@@ -8,32 +8,34 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
-/* ═══════════ CSS RESET + ROOT ═══════════ */
+/* ═══════════ RESET + ROOT ═══════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
 
 :root{
-  --bg:#0a0c10;--bg2:#111318;--bg3:#181c24;
-  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --bg:#0a0c10;--bg2:#111318;--bg3:#181c24;--bg4:#1e2330;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
   --text:#e8eaf0;--text2:#8892a4;--text3:#525d70;
-  --accent:#4f8fff;
+  --accent:#4f8fff;--accent2:#3a6fd8;
   --safe:#22c97e;--low:#a8d672;--medium:#f5c842;--high:#ff6b3d;--critical:#ff2d55;
-  --radius:14px;--radius-sm:8px;
-  --hh:56px;/* header height */
+  --bank:#00C9A7;
+  --radius:14px;--radius-sm:8px;--radius-xs:6px;
+  --hh:56px;
+  --shadow:0 4px 24px rgba(0,0,0,.45);
 }
 [data-theme="cyber"]{
-  --bg:#050810;--bg2:#0c1020;--bg3:#121828;
-  --border:rgba(80,200,255,0.12);--border2:rgba(80,200,255,0.22);
+  --bg:#050810;--bg2:#0c1020;--bg3:#121828;--bg4:#162034;
+  --border:rgba(80,200,255,0.10);--border2:rgba(80,200,255,0.20);
   --accent:#00d4ff;--safe:#00ff88;--medium:#ffcc00;--high:#ff4400;
 }
 [data-theme="neon"]{
-  --bg:#08040f;--bg2:#130d1e;--bg3:#1a1228;
-  --border:rgba(180,80,255,0.15);--border2:rgba(180,80,255,0.28);
+  --bg:#08040f;--bg2:#130d1e;--bg3:#1a1228;--bg4:#201535;
+  --border:rgba(180,80,255,0.12);--border2:rgba(180,80,255,0.24);
   --accent:#c84bff;--safe:#00ffcc;--medium:#ffdd00;--high:#ff3377;
 }
 [data-theme="arctic"]{
-  --bg:#f0f4fa;--bg2:#ffffff;--bg3:#e6edf8;
-  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.15);
+  --bg:#f0f4fa;--bg2:#ffffff;--bg3:#e6edf8;--bg4:#d8e4f5;
+  --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
   --text:#1a2033;--text2:#5a6880;--text3:#9aa3b5;
   --accent:#2563eb;--safe:#16a34a;--medium:#d97706;--high:#dc2626;--critical:#9b1c1c;
 }
@@ -45,16 +47,16 @@ body{
   transition:background .5s,color .5s;
 }
 
-/* ═══════════ BACKGROUND GRID ═══════════ */
+/* ═══════════ BACKGROUND ═══════════ */
 .bg-grid{
   position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:linear-gradient(var(--border) 1px,transparent 1px),
                    linear-gradient(90deg,var(--border) 1px,transparent 1px);
-  background-size:40px 40px;opacity:.4;
+  background-size:40px 40px;opacity:.5;
 }
 .scanlines{
-  position:fixed;inset:0;pointer-events:none;z-index:9999;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.015) 2px,rgba(0,0,0,.015) 4px);
+  position:fixed;inset:0;pointer-events:none;z-index:9000;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.012) 2px,rgba(0,0,0,.012) 4px);
   display:none;
 }
 [data-theme="cyber"] .scanlines,[data-theme="neon"] .scanlines{display:block;}
@@ -66,175 +68,257 @@ body>*{position:relative;z-index:1;}
   padding:0 16px;height:var(--hh);
   border-bottom:1px solid var(--border);background:var(--bg2);
   position:sticky;top:0;z-index:200;gap:10px;
+  backdrop-filter:blur(12px);
 }
-.logo{
-  display:flex;align-items:center;gap:8px;
-  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;
-  letter-spacing:.05em;color:var(--text);flex-shrink:0;
-}
-.logo-hex{
-  width:26px;height:26px;background:var(--accent);flex-shrink:0;
-  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-  animation:pulseHex 3s ease-in-out infinite;
-}
-@keyframes pulseHex{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.94)}}
-
+.logo{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;letter-spacing:.06em;color:var(--text);flex-shrink:0;}
+.logo-hex{width:26px;height:26px;background:var(--accent);flex-shrink:0;clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);animation:pulseHex 3s ease-in-out infinite;}
+@keyframes pulseHex{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.93)}}
 .header-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
 .theme-btns{display:flex;gap:5px;}
-.theme-btn{
-  width:20px;height:20px;border-radius:50%;border:2px solid transparent;
-  cursor:pointer;transition:all .2s;flex-shrink:0;
-}
+.theme-btn{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .2s;flex-shrink:0;}
 .theme-btn.active{border-color:var(--text);transform:scale(1.2);}
 .theme-btn[data-t="default"]{background:linear-gradient(135deg,#0a0c10,#4f8fff);}
 .theme-btn[data-t="cyber"]{background:linear-gradient(135deg,#050810,#00d4ff);}
 .theme-btn[data-t="neon"]{background:linear-gradient(135deg,#08040f,#c84bff);}
 .theme-btn[data-t="arctic"]{background:linear-gradient(135deg,#f0f4fa,#2563eb);}
-
-.sound-btn{
-  display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);
-  cursor:pointer;background:var(--bg3);border:1px solid var(--border);
-  border-radius:20px;padding:4px 10px;transition:all .2s;user-select:none;white-space:nowrap;
-}
+.sound-btn{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);cursor:pointer;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 10px;transition:all .2s;user-select:none;white-space:nowrap;}
 .sound-btn.on{color:var(--accent);border-color:var(--accent);}
 .sound-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);transition:background .2s;flex-shrink:0;}
 .sound-btn.on .sound-dot{background:var(--accent);}
 
 /* ═══════════ TICKER ═══════════ */
-.ticker{
-  font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);
-  padding:5px 16px;border-bottom:1px solid var(--border);
-  background:var(--bg2);overflow:hidden;white-space:nowrap;
-}
-.ticker-inner{display:inline-block;animation:ticker 28s linear infinite;}
+.ticker{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);padding:5px 16px;border-bottom:1px solid var(--border);background:var(--bg2);overflow:hidden;white-space:nowrap;}
+.ticker-inner{display:inline-block;animation:ticker 30s linear infinite;}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ═══════════ MOBILE TAB BAR ═══════════ */
-.tab-bar{
-  display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;
-  background:var(--bg2);border-top:1px solid var(--border);
-  padding:8px 0 max(8px,env(safe-area-inset-bottom));
+/* ═══════════ MAIN TABS (top nav) ═══════════ */
+.main-tabs{
+  display:flex;border-bottom:1px solid var(--border);background:var(--bg2);
+  position:sticky;top:var(--hh);z-index:150;
 }
-.tab-bar-inner{display:flex;justify-content:space-around;align-items:center;}
-.tab-btn{
-  display:flex;flex-direction:column;align-items:center;gap:3px;
-  background:none;border:none;color:var(--text3);cursor:pointer;
-  font-family:'Space Grotesk',sans-serif;font-size:10px;padding:4px 12px;
-  transition:color .2s;flex:1;
+.main-tab{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:11px 8px;font-family:'JetBrains Mono',monospace;font-size:11px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--text3);
+  cursor:pointer;border:none;background:none;
+  border-bottom:2px solid transparent;transition:all .25s;
 }
-.tab-btn.active{color:var(--accent);}
-.tab-btn svg{transition:transform .2s;}
-.tab-btn.active svg{transform:scale(1.1);}
+.main-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.main-tab svg{flex-shrink:0;}
 
 /* ═══════════ LAYOUT ═══════════ */
-.main{
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:calc(100dvh - var(--hh) - 28px);
-}
-
-/* ═══════════ PANELS ═══════════ */
-.panel{
-  padding:20px;border-right:1px solid var(--border);background:var(--bg);
-  overflow-y:auto;
-}
+.main{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100dvh - var(--hh) - 37px - 27px);}
+.panel{padding:20px;border-right:1px solid var(--border);background:var(--bg);overflow-y:auto;}
 .result-panel{border-right:none;background:var(--bg2);}
-.panel-title{
-  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--text3);margin-bottom:16px;
+.panel-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:16px;}
+
+/* Tab pages */
+.tab-page{display:none;}
+.tab-page.active{display:block;}
+
+/* ═══════════ BANK CONNECT PAGE ═══════════ */
+.bank-page{padding:20px;max-width:900px;margin:0 auto;}
+
+/* Hero */
+.bank-hero{
+  text-align:center;padding:32px 20px 24px;
+}
+.bank-hero-icon{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--bank),#006b5c);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;box-shadow:0 8px 32px rgba(0,201,167,.25);
+  animation:bankPulse 3s ease-in-out infinite;
+}
+@keyframes bankPulse{0%,100%{box-shadow:0 8px 32px rgba(0,201,167,.25)}50%{box-shadow:0 8px 48px rgba(0,201,167,.45)}}
+.bank-hero h1{font-family:'JetBrains Mono',monospace;font-size:clamp(18px,3vw,24px);font-weight:700;margin-bottom:8px;color:var(--text);}
+.bank-hero p{font-size:13px;color:var(--text2);max-width:460px;margin:0 auto;line-height:1.65;}
+
+/* Security badges */
+.security-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0;}
+.sec-badge{
+  display:flex;align-items:center;gap:5px;padding:5px 12px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:20px;
+  font-size:10px;color:var(--text2);font-family:'JetBrains Mono',monospace;
+}
+.sec-badge svg{flex-shrink:0;color:var(--bank);}
+
+/* Bank list grid */
+.bank-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin:20px 0;}
+.bank-card{
+  background:var(--bg3);border:2px solid var(--border);border-radius:var(--radius);
+  padding:16px 12px;cursor:pointer;transition:all .25s;text-align:center;
+  position:relative;overflow:hidden;
+}
+.bank-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at center,var(--accent) 0%,transparent 70%);
+  opacity:0;transition:opacity .3s;
+}
+.bank-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.3);}
+.bank-card.selected{border-color:var(--bank);background:rgba(0,201,167,.07);}
+.bank-card.selected::before{opacity:.05;}
+.bank-logo{
+  width:44px;height:44px;border-radius:10px;margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  background:var(--bg4);border:1px solid var(--border);
+}
+.bank-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;}
+.bank-type{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
+.bank-check{
+  position:absolute;top:8px;right:8px;width:18px;height:18px;
+  border-radius:50%;background:var(--bank);
+  display:none;align-items:center;justify-content:center;
+}
+.bank-card.selected .bank-check{display:flex;}
+
+/* Connect form */
+.connect-form{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px;margin-top:16px;
+}
+.connect-form h3{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.cf-field label{display:block;font-size:11px;color:var(--text2);margin-bottom:5px;font-weight:500;}
+.cf-field input{
+  width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius-sm);color:var(--text);font-family:'JetBrains Mono',monospace;
+  font-size:13px;outline:none;transition:all .2s;-webkit-appearance:none;min-height:42px;
+}
+.cf-field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,143,255,.1);}
+.cf-field input[type="password"]{letter-spacing:.15em;}
+
+.connect-btn{
+  width:100%;padding:13px 20px;margin-top:4px;
+  background:linear-gradient(135deg,var(--bank),#007a68);color:#fff;
+  border:none;border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;
+  display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;
+  position:relative;overflow:hidden;
+}
+.connect-btn:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px);}
+.connect-btn:disabled{opacity:.6;cursor:not-allowed;}
+
+/* Connected bank display */
+.connected-bank{
+  background:linear-gradient(135deg,rgba(0,201,167,.08),rgba(0,201,167,.03));
+  border:1px solid rgba(0,201,167,.25);border-radius:var(--radius);
+  padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;
+}
+.connected-bank-logo{width:40px;height:40px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.connected-bank-info{flex:1;}
+.connected-bank-name{font-size:14px;font-weight:600;color:var(--text);}
+.connected-bank-acc{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--bank);margin-top:2px;}
+.connected-bank-status{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--safe);margin-top:4px;}
+.status-pulse{width:6px;height:6px;border-radius:50%;background:var(--safe);animation:statusBlink 2s ease-in-out infinite;}
+@keyframes statusBlink{0%,100%{opacity:1}50%{opacity:.3}}
+.disconnect-btn{font-size:11px;color:var(--text3);background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-xs);padding:4px 10px;cursor:pointer;transition:all .2s;flex-shrink:0;}
+.disconnect-btn:hover{color:var(--high);border-color:var(--high);}
+
+/* Transaction list from bank */
+.tx-list-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.tx-list-header h3{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);}
+.tx-refresh-btn{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:opacity .2s;}
+.tx-refresh-btn:hover{opacity:.7;}
+.tx-refresh-btn svg{transition:transform .3s;}
+.tx-refresh-btn.spinning svg{animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.tx-list{display:flex;flex-direction:column;gap:8px;}
+.tx-item{
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 14px;display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all .2s;
+}
+.tx-item:hover{border-color:var(--border2);transform:translateX(3px);}
+.tx-item.analysing{border-color:var(--accent);animation:txPulse .8s ease-in-out infinite alternate;}
+@keyframes txPulse{from{box-shadow:none}to{box-shadow:0 0 12px rgba(79,143,255,.2)}}
+.tx-icon{
+  width:36px;height:36px;border-radius:10px;background:var(--bg4);
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
+}
+.tx-info{flex:1;min-width:0;}
+.tx-merchant{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tx-meta{font-size:10px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:2px;}
+.tx-right{text-align:right;flex-shrink:0;}
+.tx-amount{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--text);}
+.tx-risk-badge{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:2px 7px;border-radius:12px;font-size:9px;font-weight:700;
+  font-family:'JetBrains Mono',monospace;margin-top:3px;
+}
+.tx-risk-badge.safe{background:rgba(34,201,126,.1);color:var(--safe);}
+.tx-risk-badge.low{background:rgba(168,214,114,.1);color:var(--low);}
+.tx-risk-badge.medium{background:rgba(245,200,66,.1);color:var(--medium);}
+.tx-risk-badge.high{background:rgba(255,107,61,.1);color:var(--high);}
+.tx-risk-badge.critical{background:rgba(255,45,85,.1);color:var(--critical);}
+.tx-analyse-btn{
+  padding:4px 10px;background:var(--accent);color:#fff;border:none;
+  border-radius:var(--radius-xs);font-size:10px;cursor:pointer;
+  font-family:'Space Grotesk',sans-serif;font-weight:600;transition:all .2s;flex-shrink:0;
+}
+.tx-analyse-btn:hover{filter:brightness(1.15);}
+
+/* Bank summary stats */
+.bank-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.bank-stat{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;text-align:center;}
+.bank-stat-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.bank-stat-label{font-size:9px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;}
+
+/* Demo mode badge */
+.demo-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;
+  background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);
+  border-radius:20px;font-size:9px;color:var(--medium);
+  font-family:'JetBrains Mono',monospace;letter-spacing:.06em;margin-left:8px;
 }
 
-/* ═══════════ FORM ═══════════ */
+/* ═══════════ FORM PANEL ═══════════ */
 .field{margin-bottom:12px;}
-.field label{
-  display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);
-  margin-bottom:5px;font-weight:500;letter-spacing:.03em;
-}
-.tip{
-  width:13px;height:13px;border-radius:50%;background:var(--border2);
-  color:var(--text3);font-size:8px;display:flex;align-items:center;
-  justify-content:center;cursor:help;flex-shrink:0;
-}
+.field label{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);margin-bottom:5px;font-weight:500;letter-spacing:.03em;}
+.tip{width:13px;height:13px;border-radius:50%;background:var(--border2);color:var(--text3);font-size:8px;display:flex;align-items:center;justify-content:center;cursor:help;flex-shrink:0;}
 .field input,.field select{
   width:100%;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);
-  border-radius:var(--radius-sm);color:var(--text);
-  font-family:'JetBrains Mono',monospace;font-size:13px;
-  outline:none;transition:all .2s;-webkit-appearance:none;appearance:none;
-  min-height:44px;/* iOS touch target */
+  border-radius:var(--radius-sm);color:var(--text);font-family:'JetBrains Mono',monospace;
+  font-size:13px;outline:none;transition:all .2s;-webkit-appearance:none;appearance:none;min-height:44px;
 }
-.field input:focus,.field select:focus{
-  border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,143,255,.12);
-}
+.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,143,255,.1);}
 .field select{
-  cursor:pointer;background-repeat:no-repeat;background-position:right 12px center;
-  padding-right:32px;
+  cursor:pointer;background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238892a4'/%3E%3C/svg%3E");
 }
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-
-.checkbox-row{
-  display:flex;align-items:center;gap:10px;padding:11px 12px;
-  background:var(--bg3);border:1px solid var(--border);
-  border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;
-  min-height:44px;
-}
+.checkbox-row{display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;min-height:44px;}
 .checkbox-row:hover{border-color:var(--border2);}
 .checkbox-row input{display:none;}
-.check-box{
-  width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);
-  background:var(--bg);display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:all .2s;
-}
+.check-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border2);background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
 .checkbox-row.checked .check-box{background:var(--accent);border-color:var(--accent);}
 .check-box svg{display:none;}
 .checkbox-row.checked .check-box svg{display:block;}
 .check-label{font-size:12px;color:var(--text2);}
 
 .submit-btn{
-  width:100%;margin-top:16px;padding:14px 20px;
-  background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);
-  font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;
-  cursor:pointer;transition:all .25s;letter-spacing:.03em;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  position:relative;overflow:hidden;min-height:48px;
+  width:100%;margin-top:16px;padding:14px 20px;background:var(--accent);color:#fff;
+  border:none;border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;letter-spacing:.03em;
+  display:flex;align-items:center;justify-content:center;gap:8px;position:relative;overflow:hidden;min-height:48px;
 }
 .submit-btn:hover:not(:disabled){filter:brightness(1.15);transform:translateY(-1px);}
 .submit-btn:active:not(:disabled){transform:translateY(0);}
 .submit-btn:disabled{opacity:.6;cursor:not-allowed;}
-.btn-ripple{
-  position:absolute;border-radius:50%;background:rgba(255,255,255,.3);
-  transform:scale(0);animation:ripple .6s linear;pointer-events:none;
-}
+.btn-ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.3);transform:scale(0);animation:ripple .6s linear;pointer-events:none;}
 @keyframes ripple{to{transform:scale(4);opacity:0;}}
 
 /* ═══════════ RESULT PANEL ═══════════ */
-.idle-screen{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:400px;height:100%;gap:14px;opacity:.5;
-}
-.idle-icon{
-  width:56px;height:56px;background:var(--border);
-  clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
-  animation:idlePulse 2.5s ease-in-out infinite;
-}
+.idle-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;height:100%;gap:14px;opacity:.5;}
+.idle-icon{width:56px;height:56px;background:var(--border);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);animation:idlePulse 2.5s ease-in-out infinite;}
 @keyframes idlePulse{0%,100%{opacity:.4;transform:scale(.95)}50%{opacity:.7;transform:scale(1)}}
 .idle-text{font-size:12px;color:var(--text3);text-align:center;line-height:1.7;}
 
-/* ═══════════ LOADING ═══════════ */
-.loading-screen{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:400px;height:100%;gap:20px;
-}
-.loader-orb{
-  width:68px;height:68px;border-radius:50%;
-  border:3px solid var(--border2);border-top-color:var(--accent);
-  animation:spin 1s linear infinite;position:relative;
-}
-.loader-orb::after{
-  content:'';position:absolute;inset:8px;border-radius:50%;
-  border:2px solid var(--border);border-bottom-color:var(--accent);
-  animation:spin 1.4s linear infinite reverse;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;height:100%;gap:20px;}
+.loader-orb{width:68px;height:68px;border-radius:50%;border:3px solid var(--border2);border-top-color:var(--accent);animation:spinO 1s linear infinite;position:relative;}
+.loader-orb::after{content:'';position:absolute;inset:8px;border-radius:50%;border:2px solid var(--border);border-bottom-color:var(--accent);animation:spinO 1.4s linear infinite reverse;}
+@keyframes spinO{to{transform:rotate(360deg)}}
 .loader-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);letter-spacing:.05em;text-align:center;}
 .loader-track{width:180px;height:3px;background:var(--border2);border-radius:2px;overflow:hidden;}
 .loader-bar{height:100%;background:var(--accent);border-radius:2px;width:0%;transition:width .4s;}
@@ -244,302 +328,136 @@ body>*{position:relative;z-index:1;}
 .loader-step.active{color:var(--text);}
 .step-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0;}
 
-/* ═══════════ RESULT SCREEN ═══════════ */
 .result-screen{padding:4px 0;animation:fadeUp .5s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-
-.status-hero{
-  display:flex;flex-direction:column;align-items:center;
-  padding:20px 0 16px;position:relative;
-}
-.status-ring{
-  width:110px;height:110px;border-radius:50%;
-  border:3px solid var(--border2);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;margin-bottom:14px;
-}
-.status-score{
-  font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;
-  transition:color .5s;line-height:1;
-}
+.status-hero{display:flex;flex-direction:column;align-items:center;padding:20px 0 16px;position:relative;}
+.status-ring{width:110px;height:110px;border-radius:50%;border:3px solid var(--border2);display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:14px;}
+.status-score{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;transition:color .5s;line-height:1;}
 .status-score-sub{font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;}
-.status-label{
-  font-size:18px;font-weight:700;letter-spacing:.06em;
-  padding:7px 22px;border-radius:30px;border:2px solid transparent;
-  transition:all .5s;text-transform:uppercase;font-family:'JetBrains Mono',monospace;
-}
+.status-label{font-size:18px;font-weight:700;letter-spacing:.06em;padding:7px 22px;border-radius:30px;border:2px solid transparent;transition:all .5s;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
 .status-label.safe{color:var(--safe);border-color:var(--safe);background:rgba(34,201,126,.1);}
 .status-label.low{color:var(--low);border-color:var(--low);background:rgba(168,214,114,.1);}
 .status-label.medium{color:var(--medium);border-color:var(--medium);background:rgba(245,200,66,.1);}
 .status-label.high{color:var(--high);border-color:var(--high);background:rgba(255,107,61,.12);}
-.status-label.critical{
-  color:var(--critical);border-color:var(--critical);background:rgba(255,45,85,.14);
-  animation:dangerPulse 1.2s ease-in-out infinite;
-}
+.status-label.critical{color:var(--critical);border-color:var(--critical);background:rgba(255,45,85,.14);animation:dangerPulse 1.2s ease-in-out infinite;}
 @keyframes dangerPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,45,85,.3)}50%{box-shadow:0 0 0 10px rgba(255,45,85,0)}}
 
-.section-title{
-  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--text3);margin-bottom:10px;
-  display:flex;align-items:center;gap:8px;
-}
+.section-title{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
-
 .gauge-section,.reasons-section,.advice-section{padding:0 16px 14px;}
 .bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
 .bar-name{font-size:10px;color:var(--text2);width:105px;flex-shrink:0;font-family:'JetBrains Mono',monospace;}
 .bar-track{flex:1;height:5px;background:var(--border2);border-radius:3px;overflow:hidden;}
 .bar-fill{height:100%;border-radius:3px;width:0%;transition:width 1s cubic-bezier(.4,0,.2,1);}
 .bar-val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text2);width:24px;text-align:right;}
-
-.reason-item,.advice-item{
-  display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;
-  font-size:11.5px;color:var(--text2);line-height:1.5;
-  opacity:0;animation:slideIn .4s ease forwards;
-}
+.reason-item,.advice-item{display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;font-size:11.5px;color:var(--text2);line-height:1.5;opacity:0;animation:slideIn .4s ease forwards;}
 .reason-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px;}
 .advice-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px;background:var(--accent);}
 @keyframes slideIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
-
 .actions{display:flex;gap:8px;padding:0 16px 16px;}
-.btn-secondary{
-  flex:1;padding:10px 8px;border:1px solid var(--border2);
-  background:var(--bg3);color:var(--text2);border-radius:var(--radius-sm);
-  font-family:'Space Grotesk',sans-serif;font-size:11px;cursor:pointer;
-  transition:all .2s;min-height:42px;
-}
+.btn-secondary{flex:1;padding:10px 8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;font-size:11px;cursor:pointer;transition:all .2s;min-height:42px;}
 .btn-secondary:hover{border-color:var(--accent);color:var(--text);}
-
-.result-scroll{max-height:calc(100dvh - var(--hh) - 28px);overflow-y:auto;}
+.result-scroll{max-height:calc(100dvh - var(--hh) - 37px - 27px);overflow-y:auto;}
 .result-scroll::-webkit-scrollbar{width:3px;}
 .result-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
 .hidden{display:none!important;}
 
+/* ═══════════ MOBILE TAB BAR ═══════════ */
+.bottom-tab-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--bg2);border-top:1px solid var(--border);padding:8px 0 max(8px,env(safe-area-inset-bottom));}
+.bottom-tab-bar-inner{display:flex;justify-content:space-around;align-items:center;}
+.bottom-tab-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;color:var(--text3);cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:9px;padding:4px 12px;transition:color .2s;flex:1;}
+.bottom-tab-btn.active{color:var(--accent);}
+.bottom-tab-btn svg{transition:transform .2s;}
+.bottom-tab-btn.active svg{transform:scale(1.1);}
+
 /* ═══════════ CHATBOT ═══════════ */
-#fg-chatbot{
-  position:fixed;bottom:28px;right:20px;z-index:9999;
-  font-family:'Space Grotesk',sans-serif;
-  --cb-accent:#00C9A7;--cb-bg:#0a0d14;--cb-bg2:#111520;--cb-bg3:#181d2a;
-  --cb-border:rgba(0,201,167,0.18);--cb-text:#e2e8f0;--cb-text2:#8892a4;
-  --cb-red:#ff4757;--cb-amber:#ffa502;--cb-green:#2ed573;--cb-radius:18px;
-}
-#fg-bubble{
-  width:54px;height:54px;border-radius:50%;
-  background:linear-gradient(135deg,#00C9A7 0%,#006b5c 100%);
-  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 8px 28px rgba(0,201,167,.38),0 2px 8px rgba(0,0,0,.5);
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
-  position:relative;animation:bubbleFloat 3s ease-in-out infinite;
-}
-#fg-bubble:hover{transform:scale(1.1);box-shadow:0 12px 36px rgba(0,201,167,.5);}
+#fg-chatbot{position:fixed;bottom:28px;right:20px;z-index:9999;font-family:'Space Grotesk',sans-serif;--cb-accent:#00C9A7;--cb-bg:#0a0d14;--cb-bg2:#111520;--cb-bg3:#181d2a;--cb-border:rgba(0,201,167,0.18);--cb-text:#e2e8f0;--cb-text2:#8892a4;--cb-red:#ff4757;--cb-green:#2ed573;--cb-radius:18px;}
+#fg-bubble{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#00C9A7 0%,#006b5c 100%);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(0,201,167,.38),0 2px 8px rgba(0,0,0,.5);transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;position:relative;animation:bubbleFloat 3s ease-in-out infinite;}
+#fg-bubble:hover{transform:scale(1.1);}
 @keyframes bubbleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 #fg-bubble.open{animation:none;transform:rotate(45deg) scale(.9);}
-#fg-bubble::before{
-  content:'';position:absolute;inset:-5px;border-radius:50%;
-  border:2px solid rgba(0,201,167,.35);animation:ringPulse 2s ease-out infinite;
-}
+#fg-bubble::before{content:'';position:absolute;inset:-5px;border-radius:50%;border:2px solid rgba(0,201,167,.35);animation:ringPulse 2s ease-out infinite;}
 @keyframes ringPulse{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.4)}}
-#fg-notif{
-  position:absolute;top:2px;right:2px;width:13px;height:13px;
-  background:var(--cb-red);border-radius:50%;border:2px solid var(--cb-bg);
-  font-size:7px;color:#fff;display:flex;align-items:center;justify-content:center;
-  font-weight:700;animation:notifBounce .6s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes notifBounce{from{transform:scale(0)}to{transform:scale(1)}}
-
-#fg-window{
-  position:absolute;bottom:68px;right:0;width:360px;height:520px;
-  background:var(--cb-bg);border:1px solid var(--cb-border);
-  border-radius:var(--cb-radius);
-  box-shadow:0 20px 56px rgba(0,0,0,.7),0 0 0 1px rgba(0,201,167,.06);
-  display:flex;flex-direction:column;overflow:hidden;
-  transform-origin:bottom right;
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s;
-  transform:scale(.6) translateY(20px);opacity:0;pointer-events:none;
-}
+#fg-notif{position:absolute;top:2px;right:2px;width:13px;height:13px;background:var(--cb-red);border-radius:50%;border:2px solid var(--cb-bg);font-size:7px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;}
+#fg-window{position:absolute;bottom:68px;right:0;width:360px;height:520px;background:var(--cb-bg);border:1px solid var(--cb-border);border-radius:var(--cb-radius);box-shadow:0 20px 56px rgba(0,0,0,.7);display:flex;flex-direction:column;overflow:hidden;transform-origin:bottom right;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .25s;transform:scale(.6) translateY(20px);opacity:0;pointer-events:none;}
 #fg-window.visible{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
-
-#fg-header{
-  display:flex;align-items:center;gap:9px;padding:12px 14px;
-  background:var(--cb-bg2);border-bottom:1px solid var(--cb-border);flex-shrink:0;
-}
-.fg-avatar{
-  width:34px;height:34px;border-radius:50%;
-  background:linear-gradient(135deg,#00C9A7,#006b5c);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;
-}
-.fg-avatar-pulse{
-  position:absolute;inset:0;border-radius:50%;
-  border:2px solid rgba(0,201,167,.5);animation:avatarPulse 2s ease-out infinite;
-}
+#fg-header-cb{display:flex;align-items:center;gap:9px;padding:12px 14px;background:var(--cb-bg2);border-bottom:1px solid var(--cb-border);flex-shrink:0;}
+.fg-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00C9A7,#006b5c);display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative;}
+.fg-avatar-pulse{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(0,201,167,.5);animation:avatarPulse 2s ease-out infinite;}
 @keyframes avatarPulse{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.5)}}
-.fg-status-dot{
-  width:7px;height:7px;background:var(--cb-green);border-radius:50%;
-  position:absolute;bottom:1px;right:1px;border:1.5px solid var(--cb-bg2);
-  animation:statusBlink 2s ease-in-out infinite;
-}
-@keyframes statusBlink{0%,100%{opacity:1}50%{opacity:.4}}
+.fg-status-dot{width:7px;height:7px;background:var(--cb-green);border-radius:50%;position:absolute;bottom:1px;right:1px;border:1.5px solid var(--cb-bg2);animation:statusBlink 2s ease-in-out infinite;}
 .fg-header-info{flex:1;}
-.fg-header-name{font-size:12px;font-weight:600;color:var(--cb-text);letter-spacing:.02em;}
+.fg-header-name{font-size:12px;font-weight:600;color:var(--cb-text);}
 .fg-header-sub{font-size:9px;color:var(--cb-accent);font-family:'JetBrains Mono',monospace;margin-top:1px;}
-.fg-close{
-  width:26px;height:26px;border:none;background:rgba(255,255,255,.06);
-  border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  color:var(--cb-text2);transition:all .2s;flex-shrink:0;
-}
+.fg-close{width:26px;height:26px;border:none;background:rgba(255,255,255,.06);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--cb-text2);transition:all .2s;flex-shrink:0;}
 .fg-close:hover{background:rgba(255,255,255,.14);color:var(--cb-text);}
-
-#fg-messages{
-  flex:1;overflow-y:auto;padding:12px 12px 6px;
-  display:flex;flex-direction:column;gap:9px;scroll-behavior:smooth;
-}
+#fg-messages{flex:1;overflow-y:auto;padding:12px 12px 6px;display:flex;flex-direction:column;gap:9px;scroll-behavior:smooth;}
 #fg-messages::-webkit-scrollbar{width:3px;}
 #fg-messages::-webkit-scrollbar-thumb{background:var(--cb-border);border-radius:2px;}
-
 .fg-msg{display:flex;gap:7px;animation:msgIn .35s cubic-bezier(.34,1.56,.64,1);}
 @keyframes msgIn{from{opacity:0;transform:translateY(10px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 .fg-msg.user{flex-direction:row-reverse;}
-.fg-msg-avatar{
-  width:24px;height:24px;border-radius:50%;
-  background:linear-gradient(135deg,#00C9A7,#006b5c);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;
-}
+.fg-msg-avatar{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#00C9A7,#006b5c);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .fg-msg.user .fg-msg-avatar{background:linear-gradient(135deg,#4f8fff,#2541a0);}
-.fg-bubble-text{
-  max-width:82%;padding:8px 12px;border-radius:13px;
-  font-size:12px;line-height:1.55;color:var(--cb-text);border:1px solid transparent;
-}
+.fg-bubble-text{max-width:82%;padding:8px 12px;border-radius:13px;font-size:12px;line-height:1.55;color:var(--cb-text);border:1px solid transparent;}
 .fg-msg.bot .fg-bubble-text{background:var(--cb-bg2);border-color:var(--cb-border);border-bottom-left-radius:4px;}
 .fg-msg.user .fg-bubble-text{background:linear-gradient(135deg,#00C9A7,#007a68);border-bottom-right-radius:4px;color:#fff;}
-
-.fg-typing{
-  display:flex;align-items:center;gap:3px;padding:9px 12px;
-  background:var(--cb-bg2);border:1px solid var(--cb-border);
-  border-radius:13px;border-bottom-left-radius:4px;width:fit-content;
-}
-.fg-typing span{
-  width:5px;height:5px;background:var(--cb-accent);border-radius:50%;
-  display:inline-block;animation:typingBounce 1.2s ease-in-out infinite;
-}
+.fg-typing{display:flex;align-items:center;gap:3px;padding:9px 12px;background:var(--cb-bg2);border:1px solid var(--cb-border);border-radius:13px;border-bottom-left-radius:4px;width:fit-content;}
+.fg-typing span{width:5px;height:5px;background:var(--cb-accent);border-radius:50%;display:inline-block;animation:typingBounce 1.2s ease-in-out infinite;}
 .fg-typing span:nth-child(2){animation-delay:.15s;}
 .fg-typing span:nth-child(3){animation-delay:.3s;}
 @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
-
-.fg-result-card{
-  background:var(--cb-bg3);border:1px solid var(--cb-border);
-  border-radius:9px;padding:9px;margin-top:5px;font-size:11px;
-}
-.fg-score-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
-.fg-score-badge{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;line-height:1;}
-.fg-verdict-pill{
-  padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;
-  font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;
-}
-.fg-mini-bar{margin-bottom:4px;}
-.fg-mini-bar-label{display:flex;justify-content:space-between;font-size:9px;color:var(--cb-text2);margin-bottom:2px;font-family:'JetBrains Mono',monospace;}
-.fg-mini-bar-track{height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
-.fg-mini-bar-fill{height:100%;border-radius:2px;transition:width 1s cubic-bezier(.4,0,.2,1);}
-.fg-reasons-list{margin-top:5px;}
-.fg-reason-li{display:flex;align-items:flex-start;gap:4px;font-size:10px;color:var(--cb-text2);margin-bottom:2px;line-height:1.4;}
-.fg-reason-li::before{content:'▸';color:var(--cb-accent);flex-shrink:0;font-size:8px;margin-top:2px;}
-
-#fg-quick{
-  padding:7px 12px;display:flex;flex-wrap:nowrap;gap:5px;overflow-x:auto;
-  border-top:1px solid var(--cb-border);background:var(--cb-bg);
-  scrollbar-width:none;
-}
+#fg-quick{padding:7px 12px;display:flex;flex-wrap:nowrap;gap:5px;overflow-x:auto;border-top:1px solid var(--cb-border);background:var(--cb-bg);scrollbar-width:none;}
 #fg-quick::-webkit-scrollbar{display:none;}
-.fg-chip{
-  padding:4px 9px;border:1px solid var(--cb-border);border-radius:20px;
-  font-size:10px;color:var(--cb-text2);cursor:pointer;transition:all .2s;
-  background:var(--cb-bg2);white-space:nowrap;flex-shrink:0;
-}
-.fg-chip:hover{border-color:var(--cb-accent);color:var(--cb-accent);background:rgba(0,201,167,.08);}
-
-#fg-input-area{
-  display:flex;align-items:center;gap:7px;padding:9px 10px;
-  background:var(--cb-bg2);border-top:1px solid var(--cb-border);flex-shrink:0;
-  padding-bottom:max(9px,env(safe-area-inset-bottom));
-}
-#fg-input{
-  flex:1;background:var(--cb-bg3);border:1px solid var(--cb-border);
-  border-radius:11px;padding:8px 12px;color:var(--cb-text);
-  font-family:'Space Grotesk',sans-serif;font-size:12px;
-  outline:none;transition:border-color .2s;resize:none;
-  max-height:72px;overflow-y:auto;
-}
+.fg-chip{padding:4px 9px;border:1px solid var(--cb-border);border-radius:20px;font-size:10px;color:var(--cb-text2);cursor:pointer;transition:all .2s;background:var(--cb-bg2);white-space:nowrap;flex-shrink:0;}
+.fg-chip:hover{border-color:var(--cb-accent);color:var(--cb-accent);}
+#fg-input-area{display:flex;align-items:center;gap:7px;padding:9px 10px;background:var(--cb-bg2);border-top:1px solid var(--cb-border);flex-shrink:0;padding-bottom:max(9px,env(safe-area-inset-bottom));}
+#fg-input{flex:1;background:var(--cb-bg3);border:1px solid var(--cb-border);border-radius:11px;padding:8px 12px;color:var(--cb-text);font-family:'Space Grotesk',sans-serif;font-size:12px;outline:none;transition:border-color .2s;resize:none;max-height:72px;overflow-y:auto;}
 #fg-input:focus{border-color:var(--cb-accent);}
 #fg-input::placeholder{color:var(--cb-text2);font-size:11px;}
-#fg-send{
-  width:34px;height:34px;border-radius:50%;
-  background:linear-gradient(135deg,#00C9A7,#007a68);
-  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:all .2s;
-  box-shadow:0 4px 10px rgba(0,201,167,.28);
-}
+#fg-send{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00C9A7,#007a68);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;box-shadow:0 4px 10px rgba(0,201,167,.28);}
 #fg-send:hover{transform:scale(1.1);}
 #fg-send:active{transform:scale(.95);}
-
 .fg-scanning .fg-avatar{animation:scanGlow .8s ease-in-out infinite alternate;}
 @keyframes scanGlow{from{box-shadow:0 0 0 0 rgba(0,201,167,.3)}to{box-shadow:0 0 0 8px rgba(0,201,167,0)}}
 
 /* ═══════════ RESPONSIVE — TABLET ═══════════ */
 @media(max-width:860px){
-  .logo span:not(.logo-hex){display:none;}/* hide text on small */
-  .logo{gap:0;}
+  .main-tab span{display:none;}
+  .logo-text{display:none;}
+  .bank-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}
 }
 
-/* ═══════════ RESPONSIVE — MOBILE (<640px) ═══════════ */
+/* ═══════════ RESPONSIVE — MOBILE ═══════════ */
 @media(max-width:639px){
-  :root{--hh:52px;}
-
-  .logo span.logo-text-full{display:none;}
-  .logo-short{display:inline;}
-
-  /* Stack panels vertically, hide one, show via tabs */
-  .main{
-    grid-template-columns:1fr;
-    min-height:calc(100dvh - var(--hh) - 28px - 62px);/* room for tab bar */
-  }
-  .panel{
-    display:none;/* JS toggles active tab */
-    border-right:none;border-bottom:1px solid var(--border);
-    min-height:calc(100dvh - var(--hh) - 28px - 62px);
-    overflow-y:auto;padding:14px;
-  }
-  .panel.tab-active{display:block;}
-
-  .tab-bar{display:block;}
-
-  .result-scroll{max-height:none;overflow-y:visible;}
-
-  /* Ticker shorter on mobile */
+  :root{--hh:50px;}
   .ticker{display:none;}
-
-  /* Sound btn — icon only */
   .sound-btn span{display:none;}
-
-  /* Row2 → single col on very small */
-  @media(max-width:380px){
-    .row2{grid-template-columns:1fr;}
+  .main{grid-template-columns:1fr;min-height:calc(100dvh - var(--hh) - 37px - 27px - 60px);}
+  .panel{
+    display:none;border-right:none;border-bottom:1px solid var(--border);
+    min-height:calc(100dvh - var(--hh) - 37px - 27px - 60px);overflow-y:auto;padding:14px;
   }
-
-  /* Chatbot full-width on mobile */
+  .panel.mobile-active{display:block;}
+  .result-scroll{max-height:none;overflow-y:visible;}
+  .bottom-tab-bar{display:block;}
+  .bank-page{padding:14px;}
+  .bank-hero{padding:20px 10px 16px;}
+  .cf-row{grid-template-columns:1fr;}
+  .bank-stats{grid-template-columns:repeat(3,1fr);}
+  .bank-stat-val{font-size:14px;}
   #fg-chatbot{bottom:70px;right:12px;}
-  #fg-window{
-    position:fixed;bottom:130px;right:8px;left:8px;width:auto;height:65dvh;
-    max-height:500px;
-  }
+  #fg-window{position:fixed;bottom:130px;right:8px;left:8px;width:auto;height:60dvh;max-height:480px;}
   #fg-bubble{width:48px;height:48px;}
+  .row2{grid-template-columns:1fr 1fr;}
 }
-
-/* ═══════════ RESPONSIVE — EXTRA SMALL (<380px) ═══════════ */
 @media(max-width:380px){
+  .row2{grid-template-columns:1fr;}
+  .bank-grid{grid-template-columns:repeat(2,1fr);}
+  .bank-stats{grid-template-columns:repeat(3,1fr);}
   .status-ring{width:90px;height:90px;}
   .status-score{font-size:24px;}
   .status-label{font-size:14px;padding:5px 16px;}
-  .bar-name{width:85px;font-size:9px;}
-  .reason-item,.advice-item{font-size:10.5px;}
 }
 </style>
 </head>
@@ -570,173 +488,251 @@ body>*{position:relative;z-index:1;}
 
 <div class="ticker">
   <span class="ticker-inner">
-    ⬡ FraudGuard AI — ML-Powered Hybrid Detection · IsolationForest · Local Outlier Factor · Rules Engine · CPU Only · v1.0 &nbsp;&nbsp;&nbsp;
-    ⬡ FraudGuard AI — ML-Powered Hybrid Detection · IsolationForest · Local Outlier Factor · Rules Engine · CPU Only · v1.0 &nbsp;&nbsp;&nbsp;
+    ⬡ FraudGuard AI — ML-Powered Hybrid Detection · IsolationForest · LOF · Rules Engine · v1.0 &nbsp;·&nbsp; Bank Account Integration · Real-time Transaction Analysis &nbsp;&nbsp;
+    ⬡ FraudGuard AI — ML-Powered Hybrid Detection · IsolationForest · LOF · Rules Engine · v1.0 &nbsp;·&nbsp; Bank Account Integration · Real-time Transaction Analysis &nbsp;&nbsp;
   </span>
 </div>
 
-<!-- ═══ MAIN ═══ -->
-<div class="main">
+<!-- ═══ MAIN TABS (top) ═══ -->
+<div class="main-tabs">
+  <button class="main-tab active" id="tabManual" onclick="switchMainTab('manual')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 8h10M7 12h6M7 16h8"/></svg>
+    <span>Manual Entry</span>
+  </button>
+  <button class="main-tab" id="tabBank" onclick="switchMainTab('bank')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+    <span>Bank Connect</span>
+  </button>
+</div>
 
-  <!-- FORM PANEL -->
-  <div class="panel tab-active" id="formPanel">
-    <div class="panel-title">Transaction Details</div>
-
-    <div class="row2">
-      <div class="field">
-        <label>Amount (USD) <span class="tip" title="Transaction amount in USD">i</span></label>
-        <input type="number" id="amount" min="0" max="999999" step="0.01" placeholder="0.00" value="1250.00" inputmode="decimal"/>
-      </div>
-      <div class="field">
-        <label>Transaction Type</label>
-        <select id="txType">
-          <option value="online_purchase">Online Purchase</option>
-          <option value="atm_withdrawal">ATM Withdrawal</option>
-          <option value="bank_transfer">Bank Transfer</option>
-          <option value="pos_payment">POS / In-store</option>
-          <option value="crypto_transfer">Crypto Transfer</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="row2">
-      <div class="field">
-        <label>Location <span class="tip" title="Origin of transaction">i</span></label>
-        <select id="location">
-          <option value="local">Local (same city)</option>
-          <option value="domestic">Domestic</option>
-          <option value="international">International</option>
-          <option value="high_risk">High-Risk Region</option>
-          <option value="vpn">VPN / Proxy</option>
-          <option value="tor">TOR Network</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Hour (0–23) <span class="tip" title="24h format">i</span></label>
-        <input type="number" id="hour" min="0" max="23" value="14" inputmode="numeric"/>
-      </div>
-    </div>
-
-    <div class="row2">
-      <div class="field">
-        <label>Device Type</label>
-        <select id="device">
-          <option value="mobile">Mobile</option>
-          <option value="desktop">Desktop</option>
-          <option value="tablet">Tablet</option>
-          <option value="atm">ATM</option>
-          <option value="unknown">Unknown</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Recent Tx Count <span class="tip" title="Spikes may be suspicious">i</span></label>
-        <input type="number" id="txFreq" min="1" max="100" value="3" inputmode="numeric"/>
-      </div>
-    </div>
-
-    <div class="row2">
-      <div class="field">
-        <label>Account Age (days)</label>
-        <input type="number" id="accAge" min="1" max="3650" value="365" inputmode="numeric"/>
-      </div>
-      <div class="field">
-        <label>Failed Auth Attempts</label>
-        <input type="number" id="failedAttempts" min="0" max="20" value="0" inputmode="numeric"/>
-      </div>
-    </div>
-
-    <label class="checkbox-row" id="newDeviceRow">
-      <input type="checkbox" id="newDevice"/>
-      <div class="check-box">
-        <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-          <path d="M1 4L4 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <span class="check-label">Unrecognised / New Device</span>
-    </label>
-
-    <button class="submit-btn" id="submitBtn">
-      <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-        <path d="M8 2v12M2 8l6-6 6 6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Analyse Transaction
-    </button>
-  </div>
-
-  <!-- RESULT PANEL -->
-  <div class="panel result-panel result-scroll" id="resultPanel">
-
-    <div class="idle-screen" id="idleScreen">
-      <div class="idle-icon"></div>
-      <div class="idle-text">Submit a transaction to<br/>see fraud analysis results.</div>
-    </div>
-
-    <div class="loading-screen hidden" id="loadingScreen">
-      <div class="loader-orb"></div>
-      <div class="loader-label" id="loaderLabel">Initialising...</div>
-      <div class="loader-track"><div class="loader-bar" id="loaderBar"></div></div>
-      <div class="loader-steps" id="loaderSteps"></div>
-    </div>
-
-    <div class="result-screen hidden" id="resultScreen">
-
-      <div class="status-hero" id="statusHero">
-        <div class="status-ring" id="statusRing">
-          <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="54" fill="none" stroke-width="3" stroke="var(--border2)" stroke-linecap="round"/>
-            <circle id="gaugeCircle" cx="60" cy="60" r="54" fill="none" stroke-width="3"
-              stroke="var(--safe)" stroke-linecap="round"
-              stroke-dasharray="339.3" stroke-dashoffset="339.3"
-              transform="rotate(-90 60 60)"
-              style="transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1),stroke .5s"/>
-          </svg>
-          <div style="text-align:center">
-            <div class="status-score" id="statusScore">0</div>
-            <div class="status-score-sub">/ 100</div>
-          </div>
+<!-- ═══ TAB: MANUAL ENTRY ═══ -->
+<div class="tab-page active" id="pageManual">
+  <div class="main">
+    <!-- FORM PANEL -->
+    <div class="panel mobile-active" id="formPanel">
+      <div class="panel-title">Transaction Details</div>
+      <div class="row2">
+        <div class="field">
+          <label>Amount (USD) <span class="tip" title="Transaction amount in USD">i</span></label>
+          <input type="number" id="amount" min="0" max="999999" step="0.01" placeholder="0.00" value="1250.00" inputmode="decimal"/>
         </div>
-        <div class="status-label safe" id="statusLabel">SAFE</div>
-        <canvas id="particleCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>
+        <div class="field">
+          <label>Transaction Type</label>
+          <select id="txType">
+            <option value="online_purchase">Online Purchase</option>
+            <option value="atm_withdrawal">ATM Withdrawal</option>
+            <option value="bank_transfer">Bank Transfer</option>
+            <option value="pos_payment">POS / In-store</option>
+            <option value="crypto_transfer">Crypto Transfer</option>
+          </select>
+        </div>
       </div>
-
-      <div class="gauge-section">
-        <div class="section-title">Signal Breakdown</div>
-        <div id="breakdownBars"></div>
+      <div class="row2">
+        <div class="field">
+          <label>Location <span class="tip" title="Origin of transaction">i</span></label>
+          <select id="location">
+            <option value="local">Local (same city)</option>
+            <option value="domestic">Domestic</option>
+            <option value="international">International</option>
+            <option value="high_risk">High-Risk Region</option>
+            <option value="vpn">VPN / Proxy</option>
+            <option value="tor">TOR Network</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Hour (0–23) <span class="tip" title="24h format">i</span></label>
+          <input type="number" id="hour" min="0" max="23" value="14" inputmode="numeric"/>
+        </div>
       </div>
-
-      <div class="reasons-section">
-        <div class="section-title">Risk Indicators</div>
-        <div id="reasonsList"></div>
+      <div class="row2">
+        <div class="field">
+          <label>Device Type</label>
+          <select id="device">
+            <option value="mobile">Mobile</option>
+            <option value="desktop">Desktop</option>
+            <option value="tablet">Tablet</option>
+            <option value="atm">ATM</option>
+            <option value="unknown">Unknown</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Recent Tx Count <span class="tip" title="Spikes may be suspicious">i</span></label>
+          <input type="number" id="txFreq" min="1" max="100" value="3" inputmode="numeric"/>
+        </div>
       </div>
-
-      <div class="advice-section">
-        <div class="section-title">Risk Reduction</div>
-        <div id="adviceList"></div>
+      <div class="row2">
+        <div class="field">
+          <label>Account Age (days)</label>
+          <input type="number" id="accAge" min="1" max="3650" value="365" inputmode="numeric"/>
+        </div>
+        <div class="field">
+          <label>Failed Auth Attempts</label>
+          <input type="number" id="failedAttempts" min="0" max="20" value="0" inputmode="numeric"/>
+        </div>
       </div>
+      <label class="checkbox-row" id="newDeviceRow">
+        <input type="checkbox" id="newDevice"/>
+        <div class="check-box">
+          <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span class="check-label">Unrecognised / New Device</span>
+      </label>
+      <button class="submit-btn" id="submitBtn">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8l6-6 6 6" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Analyse Transaction
+      </button>
+    </div>
 
-      <div class="actions">
-        <button class="btn-secondary" id="reportBtn">⬇ Download Report</button>
-        <button class="btn-secondary" id="resetBtn">← New Analysis</button>
+    <!-- RESULT PANEL -->
+    <div class="panel result-panel result-scroll" id="resultPanel">
+      <div class="idle-screen" id="idleScreen">
+        <div class="idle-icon"></div>
+        <div class="idle-text">Submit a transaction to<br/>see fraud analysis results.</div>
+      </div>
+      <div class="loading-screen hidden" id="loadingScreen">
+        <div class="loader-orb"></div>
+        <div class="loader-label" id="loaderLabel">Initialising...</div>
+        <div class="loader-track"><div class="loader-bar" id="loaderBar"></div></div>
+        <div class="loader-steps" id="loaderSteps"></div>
+      </div>
+      <div class="result-screen hidden" id="resultScreen">
+        <div class="status-hero" id="statusHero">
+          <div class="status-ring" id="statusRing">
+            <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="54" fill="none" stroke-width="3" stroke="var(--border2)" stroke-linecap="round"/>
+              <circle id="gaugeCircle" cx="60" cy="60" r="54" fill="none" stroke-width="3" stroke="var(--safe)" stroke-linecap="round" stroke-dasharray="339.3" stroke-dashoffset="339.3" transform="rotate(-90 60 60)" style="transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1),stroke .5s"/>
+            </svg>
+            <div style="text-align:center">
+              <div class="status-score" id="statusScore">0</div>
+              <div class="status-score-sub">/ 100</div>
+            </div>
+          </div>
+          <div class="status-label safe" id="statusLabel">SAFE</div>
+          <canvas id="particleCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"></canvas>
+        </div>
+        <div class="gauge-section">
+          <div class="section-title">Signal Breakdown</div>
+          <div id="breakdownBars"></div>
+        </div>
+        <div class="reasons-section">
+          <div class="section-title">Risk Indicators</div>
+          <div id="reasonsList"></div>
+        </div>
+        <div class="advice-section">
+          <div class="section-title">Risk Reduction</div>
+          <div id="adviceList"></div>
+        </div>
+        <div class="actions">
+          <button class="btn-secondary" id="reportBtn">⬇ Download Report</button>
+          <button class="btn-secondary" id="resetBtn">← New Analysis</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ MOBILE TAB BAR ═══ -->
-<nav class="tab-bar">
-  <div class="tab-bar-inner">
-    <button class="tab-btn active" id="tabForm">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <rect x="3" y="3" width="18" height="18" rx="3"/>
-        <path d="M7 8h10M7 12h6M7 16h8"/>
-      </svg>
+<!-- ═══ TAB: BANK CONNECT ═══ -->
+<div class="tab-page" id="pageBank">
+  <div class="bank-page">
+
+    <!-- Hero -->
+    <div class="bank-hero" id="bankHeroSection">
+      <div class="bank-hero-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20" stroke="rgba(0,0,0,.3)" stroke-width="1.5"/><rect x="6" y="13" width="4" height="2" rx="1" fill="rgba(0,0,0,.3)"/></svg>
+      </div>
+      <h1>Connect Your Bank Account</h1>
+      <p>Link your bank to automatically scan transactions for fraud in real-time. We use read-only access — we can never move your money.</p>
+      <div class="security-badges">
+        <div class="sec-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg> 256-bit TLS</div>
+        <div class="sec-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Read-only</div>
+        <div class="sec-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> DEMO mode <span class="demo-badge">DEMO</span></div>
+      </div>
+    </div>
+
+    <!-- Connected bank display (hidden until connected) -->
+    <div class="connected-bank hidden" id="connectedBankDisplay">
+      <div class="connected-bank-logo" id="connectedBankLogo">🏦</div>
+      <div class="connected-bank-info">
+        <div class="connected-bank-name" id="connectedBankName">Bank Name</div>
+        <div class="connected-bank-acc" id="connectedBankAcc">****  ****  ****  1234</div>
+        <div class="connected-bank-status"><div class="status-pulse"></div> Live · Read-only access</div>
+      </div>
+      <button class="disconnect-btn" id="disconnectBtn">Disconnect</button>
+    </div>
+
+    <!-- Bank stats (hidden until connected) -->
+    <div class="bank-stats hidden" id="bankStats">
+      <div class="bank-stat"><div class="bank-stat-val" id="statTotal">0</div><div class="bank-stat-label">Transactions</div></div>
+      <div class="bank-stat"><div class="bank-stat-val" id="statFlagged" style="color:var(--high)">0</div><div class="bank-stat-label">Flagged</div></div>
+      <div class="bank-stat"><div class="bank-stat-val" id="statSafe" style="color:var(--safe)">0</div><div class="bank-stat-label">Safe</div></div>
+    </div>
+
+    <!-- Transaction list (hidden until connected) -->
+    <div class="hidden" id="txListSection">
+      <div class="tx-list-header">
+        <h3>Recent Transactions</h3>
+        <button class="tx-refresh-btn" id="refreshTxBtn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Refresh
+        </button>
+      </div>
+      <div class="tx-list" id="txList"></div>
+    </div>
+
+    <!-- Bank selection (hidden when connected) -->
+    <div id="bankSelectSection">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;">
+        Select Your Bank
+      </div>
+      <div class="bank-grid" id="bankGrid"></div>
+
+      <!-- Connect form -->
+      <div class="connect-form" id="connectFormBlock">
+        <h3>Account Credentials <span class="demo-badge">Demo — no real data used</span></h3>
+        <div class="cf-row">
+          <div class="cf-field">
+            <label>Account Number / IBAN</label>
+            <input type="text" id="bankAccNum" placeholder="e.g. IN89 3704 0044 0532 0130 00" inputmode="text"/>
+          </div>
+          <div class="cf-field">
+            <label>Account Holder Name</label>
+            <input type="text" id="bankHolder" placeholder="Full name"/>
+          </div>
+        </div>
+        <div class="cf-row">
+          <div class="cf-field">
+            <label>Net Banking User ID</label>
+            <input type="text" id="bankUserId" placeholder="User ID / Customer ID"/>
+          </div>
+          <div class="cf-field">
+            <label>Password (demo only)</label>
+            <input type="password" id="bankPass" placeholder="••••••••"/>
+          </div>
+        </div>
+        <button class="connect-btn" id="connectBankBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+          Connect Securely
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ MOBILE BOTTOM TAB BAR ═══ -->
+<nav class="bottom-tab-bar">
+  <div class="bottom-tab-bar-inner">
+    <button class="bottom-tab-btn active" id="mobTabForm" onclick="mobileTab('form')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 8h10M7 12h6M7 16h8"/></svg>
       Form
     </button>
-    <button class="tab-btn" id="tabResult">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-      </svg>
+    <button class="bottom-tab-btn" id="mobTabResult" onclick="mobileTab('result')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
       Results
+    </button>
+    <button class="bottom-tab-btn" id="mobTabBank" onclick="mobileTab('bank')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      Bank
     </button>
   </div>
 </nav>
@@ -749,102 +745,100 @@ body>*{position:relative;z-index:1;}
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="rgba(255,255,255,0.15)"/>
       <path d="M12 8a2 2 0 100 4 2 2 0 000-4z" fill="white"/>
       <path d="M12 6C8.13 6 5 9.13 5 13h2c0-2.76 2.24-5 5-5s5 2.24 5 5h2c0-3.87-3.13-7-7-7z" fill="white" opacity="0.7"/>
-      <circle cx="8" cy="15" r="1.5" fill="white" opacity="0.8"/>
-      <circle cx="12" cy="16" r="1.5" fill="white"/>
-      <circle cx="16" cy="15" r="1.5" fill="white" opacity="0.8"/>
+      <circle cx="8" cy="15" r="1.5" fill="white" opacity="0.8"/><circle cx="12" cy="16" r="1.5" fill="white"/><circle cx="16" cy="15" r="1.5" fill="white" opacity="0.8"/>
     </svg>
   </button>
-
-  <div id="fg-window" role="dialog" aria-label="FraudGuard AI Chatbot">
-    <div id="fg-header">
+  <div id="fg-window" role="dialog">
+    <div id="fg-header-cb">
       <div class="fg-avatar">
-        <div class="fg-avatar-pulse"></div>
-        <div class="fg-status-dot"></div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
-          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-        </svg>
+        <div class="fg-avatar-pulse"></div><div class="fg-status-dot"></div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
       </div>
       <div class="fg-header-info">
         <div class="fg-header-name">FraudGuard AI</div>
-        <div class="fg-header-sub">⬡ Natural Language Fraud Analysis</div>
+        <div class="fg-header-sub">⬡ Natural Language Analysis</div>
       </div>
-      <button class="fg-close" id="fg-close" title="Close chat">
+      <button class="fg-close" id="fg-close">
         <svg width="11" height="11" viewBox="0 0 12 12"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
     </div>
     <div id="fg-messages"></div>
     <div id="fg-quick">
-      <div class="fg-chip" data-msg="My last 7 days average was $500 but today I made a $50,000 transfer">🚨 Spike</div>
-      <div class="fg-chip" data-msg="25 transactions in one hour today, normally 3 per day">⚡ Velocity</div>
-      <div class="fg-chip" data-msg="Someone used my card on TOR network at 3am for crypto">🌐 TOR+Crypto</div>
-      <div class="fg-chip" data-msg="New account opened 10 days ago, first transaction is $8000 international">🆕 New Acct</div>
+      <div class="fg-chip" data-msg="My average is $500 but today I sent $50,000">🚨 Spike</div>
+      <div class="fg-chip" data-msg="25 transactions in one hour, normally 3 per day">⚡ Velocity</div>
+      <div class="fg-chip" data-msg="TOR network at 3am for crypto transfer">🌐 TOR+Crypto</div>
+      <div class="fg-chip" data-msg="New account 10 days ago, $8000 international">🆕 New Acct</div>
     </div>
     <div id="fg-input-area">
-      <textarea id="fg-input" rows="1" placeholder="Describe a transaction in plain English…" maxlength="500"></textarea>
-      <button id="fg-send" title="Send">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
-      </button>
+      <textarea id="fg-input" rows="1" placeholder="Describe a transaction…" maxlength="500"></textarea>
+      <button id="fg-send"><svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg></button>
     </div>
   </div>
 </div>
 
 <script>
-/* ═══════════ UTILITIES ═══════════ */
+/* ═══════════ CORE UTILITIES ═══════════ */
 const $ = id => document.getElementById(id);
 const body = document.body;
 const isMobile = () => window.innerWidth < 640;
 
-/* ═══════════ THEME (persisted) ═══════════ */
+/* ═══════════ THEME ═══════════ */
 const savedTheme = localStorage.getItem('fg_theme') || 'default';
 body.dataset.theme = savedTheme;
 document.querySelectorAll('.theme-btn').forEach(btn => {
   btn.classList.toggle('active', btn.dataset.t === savedTheme);
   btn.onclick = () => {
-    const t = btn.dataset.t;
-    body.dataset.theme = t;
+    const t = btn.dataset.t; body.dataset.theme = t;
     localStorage.setItem('fg_theme', t);
     document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.t === t));
   };
 });
 
-/* ═══════════ SOUND (persisted) ═══════════ */
+/* ═══════════ SOUND ═══════════ */
 let soundOn = localStorage.getItem('fg_sound') !== '0';
 const soundBtn = $('soundToggle');
 soundBtn.classList.toggle('on', soundOn);
-soundBtn.onclick = () => {
-  soundOn = !soundOn;
-  soundBtn.classList.toggle('on', soundOn);
-  localStorage.setItem('fg_sound', soundOn ? '1' : '0');
-};
+soundBtn.onclick = () => { soundOn = !soundOn; soundBtn.classList.toggle('on', soundOn); localStorage.setItem('fg_sound', soundOn?'1':'0'); };
 
-/* ═══════════ MOBILE TAB BAR ═══════════ */
-const tabForm   = $('tabForm');
-const tabResult = $('tabResult');
-const formPanel   = $('formPanel');
-const resultPanel = $('resultPanel');
-
-function activateTab(which) {
-  if (which === 'form') {
-    formPanel.classList.add('tab-active');
-    resultPanel.classList.remove('tab-active');
-    tabForm.classList.add('active');
-    tabResult.classList.remove('active');
-  } else {
-    resultPanel.classList.add('tab-active');
-    formPanel.classList.remove('tab-active');
-    tabResult.classList.add('active');
-    tabForm.classList.remove('active');
+/* ═══════════ MAIN TABS (top) ═══════════ */
+function switchMainTab(tab) {
+  ['manual','bank'].forEach(t => {
+    $('tabManual') && $('tab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t===tab);
+    $('page'+t.charAt(0).toUpperCase()+t.slice(1)).classList.toggle('active', t===tab);
+  });
+  if (isMobile()) {
+    if (tab === 'bank') {
+      [$('formPanel'), $('resultPanel')].forEach(p => p.classList.remove('mobile-active'));
+    } else {
+      $('formPanel').classList.add('mobile-active');
+      $('resultPanel').classList.remove('mobile-active');
+    }
   }
 }
 
-tabForm.onclick   = () => activateTab('form');
-tabResult.onclick = () => activateTab('result');
+/* ═══════════ MOBILE BOTTOM TABS ═══════════ */
+function mobileTab(which) {
+  ['form','result','bank'].forEach(t => $('mobTab'+t.charAt(0).toUpperCase()+t.slice(1)).classList.remove('active'));
+  $('mobTab'+which.charAt(0).toUpperCase()+which.slice(1)).classList.add('active');
 
-/* On desktop both panels always show */
+  if (which === 'bank') {
+    switchMainTab('bank');
+    $('tabBank').classList.add('active'); $('tabManual').classList.remove('active');
+    $('pageBank').classList.add('active'); $('pageManual').classList.remove('active');
+    return;
+  }
+  // ensure manual tab
+  $('tabManual').classList.add('active'); $('tabBank').classList.remove('active');
+  $('pageManual').classList.add('active'); $('pageBank').classList.remove('active');
+
+  $('formPanel').classList.toggle('mobile-active', which==='form');
+  $('resultPanel').classList.toggle('mobile-active', which==='result');
+}
+
 function applyLayout() {
   if (!isMobile()) {
-    formPanel.classList.add('tab-active');
-    resultPanel.classList.add('tab-active');
+    $('formPanel').classList.add('mobile-active');
+    $('resultPanel').classList.add('mobile-active');
   }
 }
 applyLayout();
@@ -852,8 +846,7 @@ window.addEventListener('resize', applyLayout);
 
 /* ═══════════ CHECKBOX ═══════════ */
 $('newDeviceRow').addEventListener('click', () => {
-  const cb = $('newDevice');
-  cb.checked = !cb.checked;
+  const cb = $('newDevice'); cb.checked = !cb.checked;
   $('newDeviceRow').classList.toggle('checked', cb.checked);
 });
 
@@ -862,8 +855,7 @@ function playSound(level) {
   if (!soundOn) return;
   const Ctx = window.AudioContext || window.webkitAudioContext;
   if (!Ctx) return;
-  const ctx = new Ctx();
-  const t = ctx.currentTime;
+  const ctx = new Ctx(), t = ctx.currentTime;
   const profiles = {
     safe:    {notes:[523.25,659.25,783.99],type:'sine',peak:.1,hold:.22,gap:.1},
     low:     {notes:[493.88,587.33,740.0],type:'sine',peak:.09,hold:.2,gap:.11},
@@ -872,353 +864,378 @@ function playSound(level) {
     critical:{notes:[110,138.59,110,138.59,110,138.59],type:'square',peak:.15,hold:.12,gap:.06}
   };
   const p = profiles[level] || profiles.safe;
-  p.notes.forEach((freq, i) => {
-    const osc  = ctx.createOscillator();
-    const gain = ctx.createGain();
-    const s    = t + i * p.gap;
-    osc.type = p.type; osc.frequency.value = freq;
-    gain.gain.setValueAtTime(0.001, s);
-    gain.gain.exponentialRampToValueAtTime(p.peak, s + .02);
-    gain.gain.exponentialRampToValueAtTime(0.001, s + p.hold);
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.start(s); osc.stop(s + p.hold + .05);
+  p.notes.forEach((freq,i)=>{
+    const osc=ctx.createOscillator(),gain=ctx.createGain(),s=t+i*p.gap;
+    osc.type=p.type; osc.frequency.value=freq;
+    gain.gain.setValueAtTime(0.001,s); gain.gain.exponentialRampToValueAtTime(p.peak,s+.02);
+    gain.gain.exponentialRampToValueAtTime(0.001,s+p.hold);
+    osc.connect(gain); gain.connect(ctx.destination); osc.start(s); osc.stop(s+p.hold+.05);
   });
-  setTimeout(() => ctx.close(), 2000);
+  setTimeout(()=>ctx.close(),2000);
 }
 
 /* ═══════════ SCREEN STATES ═══════════ */
 function showScreen(name) {
-  ['idleScreen','loadingScreen','resultScreen'].forEach(id => $(id).classList.add('hidden'));
-  $(name + 'Screen').classList.remove('hidden');
+  ['idleScreen','loadingScreen','resultScreen'].forEach(id=>$(id).classList.add('hidden'));
+  $(name+'Screen').classList.remove('hidden');
 }
 
 /* ═══════════ LOADER ═══════════ */
-const STEPS = [
-  'Validating transaction input...',
-  'Extracting fraud features...',
-  'Running Isolation Forest...',
-  'Running Local Outlier Factor...',
-  'Applying rules engine...'
-];
-let loaderInt = null;
-
-function startLoader() {
-  $('loaderSteps').innerHTML = STEPS.map((s,i) =>
-    `<div class="loader-step" id="step${i}"><div class="step-dot"></div>${s}</div>`
-  ).join('');
-  $('loaderBar').style.width = '6%';
-  $('loaderLabel').textContent = STEPS[0];
-  $('step0').className = 'loader-step active';
-  let i = 0;
-  loaderInt = setInterval(() => {
-    i++;
-    if (i >= STEPS.length) return;
-    document.querySelectorAll('.loader-step').forEach((el, j) => {
-      el.className = 'loader-step' + (j < i ? ' done' : j === i ? ' active' : '');
-    });
-    $('loaderBar').style.width = (6 + i * 17) + '%';
-    $('loaderLabel').textContent = STEPS[i];
-  }, 500);
+const STEPS=['Validating input...','Extracting features...','Running Isolation Forest...','Running LOF...','Applying rules engine...'];
+let loaderInt=null;
+function startLoader(){
+  $('loaderSteps').innerHTML=STEPS.map((s,i)=>`<div class="loader-step" id="step${i}"><div class="step-dot"></div>${s}</div>`).join('');
+  $('loaderBar').style.width='6%'; $('loaderLabel').textContent=STEPS[0]; $('step0').className='loader-step active';
+  let i=0;
+  loaderInt=setInterval(()=>{i++;if(i>=STEPS.length)return;document.querySelectorAll('.loader-step').forEach((el,j)=>{el.className='loader-step'+(j<i?' done':j===i?' active':'');});$('loaderBar').style.width=(6+i*17)+'%';$('loaderLabel').textContent=STEPS[i];},500);
 }
-function stopLoader() {
-  clearInterval(loaderInt);
-  $('loaderBar').style.width = '100%';
-  $('loaderLabel').textContent = 'Analysis complete.';
-}
+function stopLoader(){clearInterval(loaderInt);$('loaderBar').style.width='100%';$('loaderLabel').textContent='Analysis complete.';}
 
 /* ═══════════ GAUGE ═══════════ */
-function animateGauge(score) {
-  const circle = $('gaugeCircle');
-  const offset = 339.3 - (score / 100) * 339.3;
-  const color  = score >= 80 ? 'var(--critical)' : score >= 60 ? 'var(--high)' :
-                 score >= 40 ? 'var(--medium)' : score >= 20 ? 'var(--low)' : 'var(--safe)';
-  circle.style.stroke = color;
-  setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
-  let cur = 0, step = score / 60;
-  const timer = setInterval(() => {
-    cur = Math.min(cur + step, score);
-    $('statusScore').textContent = Math.round(cur);
-    if (cur >= score) clearInterval(timer);
-  }, 16);
+function animateGauge(score){
+  const circle=$('gaugeCircle');
+  const offset=339.3-(score/100)*339.3;
+  const color=score>=80?'var(--critical)':score>=60?'var(--high)':score>=40?'var(--medium)':score>=20?'var(--low)':'var(--safe)';
+  circle.style.stroke=color;
+  setTimeout(()=>{circle.style.strokeDashoffset=offset;},100);
+  let cur=0,step=score/60;
+  const timer=setInterval(()=>{cur=Math.min(cur+step,score);$('statusScore').textContent=Math.round(cur);if(cur>=score)clearInterval(timer);},16);
 }
 
 /* ═══════════ RISK LEVEL ═══════════ */
-function getRiskLevel(score) {
-  if (score < 20) return {level:'safe',    label:'SAFE'};
-  if (score < 40) return {level:'low',     label:'LOW RISK'};
-  if (score < 60) return {level:'medium',  label:'MEDIUM'};
-  if (score < 80) return {level:'high',    label:'HIGH RISK'};
-  return              {level:'critical', label:'CRITICAL'};
+function getRiskLevel(score){
+  if(score<20)return{level:'safe',label:'SAFE'};
+  if(score<40)return{level:'low',label:'LOW RISK'};
+  if(score<60)return{level:'medium',label:'MEDIUM'};
+  if(score<80)return{level:'high',label:'HIGH RISK'};
+  return{level:'critical',label:'CRITICAL'};
 }
 
 /* ═══════════ PARTICLE BURST ═══════════ */
-function burstParticles(risk) {
-  const hero   = $('statusHero');
-  const canvas = $('particleCanvas');
-  const rect   = hero.getBoundingClientRect();
-  canvas.width = rect.width; canvas.height = rect.height;
-  const ctx    = canvas.getContext('2d');
-  const colors = {safe:'#22c97e',low:'#a8d672',medium:'#f5c842',high:'#ff6b3d',critical:'#ff2d55'};
-  const c      = colors[risk.level] || '#4f8fff';
-  const parts  = Array.from({length: 26}, () => ({
-    x:rect.width/2, y:rect.height/2,
-    vx:(Math.random()-.5)*4, vy:(Math.random()-.5)*4-1.5,
-    life:1, r:Math.random()*3+2
-  }));
-  function draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    let alive = false;
-    parts.forEach(p => {
-      p.x+=p.vx; p.y+=p.vy; p.vy+=.08; p.life-=.02;
-      if(p.life>0){
-        alive=true;
-        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle=c+Math.floor(p.life*255).toString(16).padStart(2,'0');
-        ctx.fill();
-      }
-    });
-    if(alive) requestAnimationFrame(draw);
-    else ctx.clearRect(0,0,canvas.width,canvas.height);
+function burstParticles(risk){
+  const hero=$('statusHero'),canvas=$('particleCanvas');
+  const rect=hero.getBoundingClientRect();
+  canvas.width=rect.width;canvas.height=rect.height;
+  const ctx=canvas.getContext('2d');
+  const colors={safe:'#22c97e',low:'#a8d672',medium:'#f5c842',high:'#ff6b3d',critical:'#ff2d55'};
+  const c=colors[risk.level]||'#4f8fff';
+  const parts=Array.from({length:26},()=>({x:rect.width/2,y:rect.height/2,vx:(Math.random()-.5)*4,vy:(Math.random()-.5)*4-1.5,life:1,r:Math.random()*3+2}));
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);let alive=false;
+    parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.08;p.life-=.02;if(p.life>0){alive=true;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=c+Math.floor(p.life*255).toString(16).padStart(2,'0');ctx.fill();}});
+    if(alive)requestAnimationFrame(draw);else ctx.clearRect(0,0,canvas.width,canvas.height);
   }
   draw();
 }
 
-/* ═══════════ FRAUD ENGINE ═══════════ */
-function analyseTransaction(data) {
-  let score = 0;
-  const reasons = [], advice = [];
-  const amt = parseFloat(data.amount) || 0;
-  if (amt > 10000)      { score += 25; reasons.push('Unusually high amount (>$10,000)'); }
-  else if (amt > 5000)  { score += 15; reasons.push('High transaction amount (>$5,000)'); }
-  else if (amt > 2000)  { score += 8; }
-  else if (amt < 1)     { score += 10; reasons.push('Suspiciously low — possible test transaction'); }
-
-  const locS = {local:0,domestic:5,international:15,high_risk:30,vpn:22,tor:35};
-  const locM = {international:'International origin detected',high_risk:'High-risk region origin',
-                vpn:'VPN/Proxy — masked origin',tor:'TOR network — anonymised origin'};
-  score += locS[data.location] || 0;
-  if (locM[data.location]) reasons.push(locM[data.location]);
-
-  const hr = parseInt(data.hour);
-  if (hr >= 0 && hr <= 4)     { score += 18; reasons.push('Late-night transaction (00:00–04:59)'); }
-  else if (hr >= 22 || hr <= 5){ score += 10; reasons.push('Off-hours transaction detected'); }
-
-  const txS = {crypto_transfer:18,bank_transfer:8,atm_withdrawal:5,online_purchase:3,pos_payment:0};
-  score += txS[data.txType] || 0;
-  if (data.txType === 'crypto_transfer') reasons.push('Crypto transfer — high-risk channel');
-
-  const devS = {unknown:20,atm:5,mobile:2,tablet:2,desktop:0};
-  score += devS[data.device] || 0;
-  if (data.device === 'unknown') reasons.push('Transaction from unidentified device');
-
-  const freq = parseInt(data.txFreq)||1;
-  if (freq >= 15)      { score += 22; reasons.push('Very high transaction frequency (≥15)'); }
-  else if (freq >= 8)  { score += 12; reasons.push('Elevated transaction frequency (≥8)'); }
-  else if (freq >= 5)  { score += 5; }
-
-  const age = parseInt(data.accAge)||1;
-  if (age < 30)        { score += 20; reasons.push('New account (<30 days) — higher risk'); }
-  else if (age < 90)   { score += 10; reasons.push('Relatively new account (<90 days)'); }
-
-  const fails = parseInt(data.failedAttempts)||0;
-  if (fails >= 5)      { score += 25; reasons.push('Multiple failed auth attempts (≥5)'); }
-  else if (fails >= 3) { score += 15; reasons.push('Several failed auth attempts'); }
-  else if (fails >= 1) { score += 8; }
-
-  if (data.newDevice)  { score += 15; reasons.push('Transaction from new/unrecognised device'); }
-
-  score = Math.min(Math.round(score), 100);
-  const ifScore    = Math.min(score + Math.round((Math.random()-.5)*12), 100);
-  const lofScore   = Math.min(score + Math.round((Math.random()-.5)*10), 100);
-  const rulesScore = Math.min(score + Math.round((Math.random()-.5)*8),  100);
-
-  if (!reasons.length) reasons.push('No significant risk indicators detected');
-
-  if (score >= 60) { advice.push('Block transaction and require secondary verification'); advice.push('Notify account holder via registered contact'); }
-  if (score >= 40) { advice.push('Request step-up authentication (OTP/biometric)'); advice.push('Review recent account activity for anomalies'); }
-  if (['tor','vpn'].includes(data.location)) advice.push('Block VPN/TOR access and log source IP');
-  if (fails >= 3) advice.push('Temporarily lock account until identity verified');
-  if (age < 30)   advice.push('Apply enhanced due diligence for new accounts');
-  if (score < 20) advice.push('Transaction appears legitimate — no action required');
-
-  return {score, reasons, advice, breakdown:{isolation_forest:ifScore,lof:lofScore,rules:rulesScore}};
+/* ═══════════ FRAUD ENGINE (local fallback) ═══════════ */
+function analyseLocal(data){
+  let score=0;const reasons=[],advice=[];
+  const amt=parseFloat(data.amount)||0;
+  if(amt>10000){score+=25;reasons.push('Unusually high amount (>$10,000)');}
+  else if(amt>5000){score+=15;reasons.push('High transaction amount (>$5,000)');}
+  else if(amt>2000){score+=8;}
+  else if(amt<1){score+=10;reasons.push('Suspiciously low — possible test transaction');}
+  const locS={local:0,domestic:5,international:15,high_risk:30,vpn:22,tor:35};
+  const locM={international:'International origin detected',high_risk:'High-risk region',vpn:'VPN/Proxy — masked origin',tor:'TOR — anonymised origin'};
+  score+=locS[data.location]||0; if(locM[data.location])reasons.push(locM[data.location]);
+  const hr=parseInt(data.hour);
+  if(hr>=0&&hr<=4){score+=18;reasons.push('Late-night transaction (00:00–04:59)');}
+  else if(hr>=22||hr<=5){score+=10;reasons.push('Off-hours transaction detected');}
+  const txS={crypto_transfer:18,bank_transfer:8,atm_withdrawal:5,online_purchase:3,pos_payment:0};
+  score+=txS[data.txType]||0; if(data.txType==='crypto_transfer')reasons.push('Crypto transfer — high-risk channel');
+  const devS={unknown:20,atm:5,mobile:2,tablet:2,desktop:0};
+  score+=devS[data.device]||0; if(data.device==='unknown')reasons.push('Transaction from unidentified device');
+  const freq=parseInt(data.txFreq)||1;
+  if(freq>=15){score+=22;reasons.push('Very high transaction frequency (≥15)');}
+  else if(freq>=8){score+=12;reasons.push('Elevated transaction frequency (≥8)');}
+  else if(freq>=5){score+=5;}
+  const age=parseInt(data.accAge)||1;
+  if(age<30){score+=20;reasons.push('New account (<30 days)');}
+  else if(age<90){score+=10;reasons.push('Relatively new account (<90 days)');}
+  const fails=parseInt(data.failedAttempts)||0;
+  if(fails>=5){score+=25;reasons.push('Multiple failed auth attempts (≥5)');}
+  else if(fails>=3){score+=15;reasons.push('Several failed auth attempts');}
+  else if(fails>=1){score+=8;}
+  if(data.newDevice){score+=15;reasons.push('Transaction from new/unrecognised device');}
+  score=Math.min(Math.round(score),100);
+  const ifScore=Math.min(score+Math.round((Math.random()-.5)*12),100);
+  const lofScore=Math.min(score+Math.round((Math.random()-.5)*10),100);
+  const rulesScore=Math.min(score+Math.round((Math.random()-.5)*8),100);
+  if(!reasons.length)reasons.push('No significant risk indicators detected');
+  if(score>=60){advice.push('Block transaction and require secondary verification');advice.push('Notify account holder via registered contact');}
+  if(score>=40){advice.push('Request step-up authentication (OTP/biometric)');advice.push('Review recent account activity');}
+  if(['tor','vpn'].includes(data.location))advice.push('Block VPN/TOR access and log source IP');
+  if(fails>=3)advice.push('Temporarily lock account until identity verified');
+  if(age<30)advice.push('Apply enhanced due diligence for new accounts');
+  if(score<20)advice.push('Transaction appears legitimate — no action required');
+  return{score,reasons,advice,breakdown:{isolation_forest:ifScore,lof:lofScore,rules:rulesScore}};
 }
 
-/* ═══════════ SUBMIT ═══════════ */
-let lastResult = null;
+/* ═══════════ RENDER RESULT ═══════════ */
+function renderResult(result){
+  showScreen('result');
+  const risk=getRiskLevel(result.score);
+  const label=$('statusLabel');
+  label.textContent=risk.label; label.className='status-label '+risk.level;
+  animateGauge(result.score); playSound(risk.level); burstParticles(risk);
+  const barData=[{name:'Isolation Forest',val:result.breakdown.isolation_forest},{name:'Local Outlier Factor',val:result.breakdown.lof},{name:'Rules Engine',val:result.breakdown.rules}];
+  const dotC={safe:'#22c97e',low:'#a8d672',medium:'#f5c842',high:'#ff6b3d',critical:'#ff2d55'};
+  const dc=dotC[risk.level];
+  $('breakdownBars').innerHTML=barData.map(b=>{
+    const c=b.val>=60?'var(--critical)':b.val>=40?'var(--high)':b.val>=20?'var(--medium)':'var(--safe)';
+    return`<div class="bar-row"><div class="bar-name">${b.name}</div><div class="bar-track"><div class="bar-fill" style="background:${c}" data-val="${b.val}"></div></div><div class="bar-val">${b.val}</div></div>`;
+  }).join('');
+  setTimeout(()=>document.querySelectorAll('.bar-fill').forEach(el=>{el.style.width=el.dataset.val+'%';}),100);
+  $('reasonsList').innerHTML=result.reasons.map((r,i)=>`<div class="reason-item" style="animation-delay:${i*80}ms"><div class="reason-dot" style="background:${dc}"></div>${r}</div>`).join('');
+  $('adviceList').innerHTML=result.advice.map((a,i)=>`<div class="advice-item" style="animation-delay:${i*80+200}ms"><div class="advice-dot"></div>${a}</div>`).join('');
+}
 
-$('submitBtn').addEventListener('click', (e) => {
-  const btn = $('submitBtn');
-  /* ripple */
-  const rip = document.createElement('span');
-  rip.className = 'btn-ripple';
-  const r = btn.getBoundingClientRect();
-  rip.style.cssText = `width:${Math.max(r.width,r.height)*2}px;height:${Math.max(r.width,r.height)*2}px;left:${e.clientX-r.left-r.width}px;top:${e.clientY-r.top-r.height}px`;
-  btn.appendChild(rip);
-  setTimeout(() => rip.remove(), 700);
-
-  const data = {
-    amount:$('amount').value, txType:$('txType').value, location:$('location').value,
-    hour:$('hour').value, device:$('device').value, txFreq:$('txFreq').value,
-    accAge:$('accAge').value, failedAttempts:$('failedAttempts').value,
-    newDevice:$('newDevice').checked
-  };
-
-  /* On mobile: switch to result tab */
-  if (isMobile()) activateTab('result');
-
-  showScreen('loading');
-  btn.disabled = true;
-  startLoader();
-
-  setTimeout(() => {
-    const result = analyseTransaction(data);
-    lastResult = result;
-    stopLoader();
-
-    setTimeout(() => {
-      showScreen('result');
-      const risk = getRiskLevel(result.score);
-      const label = $('statusLabel');
-      label.textContent = risk.label;
-      label.className   = 'status-label ' + risk.level;
-
-      animateGauge(result.score);
-      playSound(risk.level);
-      burstParticles(risk);
-
-      /* Breakdown bars */
-      const barData = [
-        {name:'Isolation Forest', val:result.breakdown.isolation_forest},
-        {name:'Local Outlier Factor', val:result.breakdown.lof},
-        {name:'Rules Engine', val:result.breakdown.rules}
-      ];
-      const dotC = {safe:'#22c97e',low:'#a8d672',medium:'#f5c842',high:'#ff6b3d',critical:'#ff2d55'};
-      const dc = dotC[risk.level];
-
-      $('breakdownBars').innerHTML = barData.map(b => {
-        const c = b.val>=60?'var(--critical)':b.val>=40?'var(--high)':b.val>=20?'var(--medium)':'var(--safe)';
-        return `<div class="bar-row">
-          <div class="bar-name">${b.name}</div>
-          <div class="bar-track"><div class="bar-fill" style="background:${c}" data-val="${b.val}"></div></div>
-          <div class="bar-val">${b.val}</div></div>`;
-      }).join('');
-      setTimeout(() => {
-        document.querySelectorAll('.bar-fill').forEach(el => { el.style.width = el.dataset.val + '%'; });
-      }, 100);
-
-      $('reasonsList').innerHTML = result.reasons.map((r,i) =>
-        `<div class="reason-item" style="animation-delay:${i*80}ms">
-          <div class="reason-dot" style="background:${dc}"></div>${r}</div>`
-      ).join('');
-
-      $('adviceList').innerHTML = result.advice.map((a,i) =>
-        `<div class="advice-item" style="animation-delay:${i*80+200}ms">
-          <div class="advice-dot"></div>${a}</div>`
-      ).join('');
-
-      btn.disabled = false;
-    }, 300);
-  }, 2800);
+/* ═══════════ SUBMIT (manual) ═══════════ */
+let lastResult=null;
+$('submitBtn').addEventListener('click',(e)=>{
+  const btn=$('submitBtn');
+  const rip=document.createElement('span');rip.className='btn-ripple';
+  const r=btn.getBoundingClientRect();rip.style.cssText=`width:${Math.max(r.width,r.height)*2}px;height:${Math.max(r.width,r.height)*2}px;left:${e.clientX-r.left-r.width}px;top:${e.clientY-r.top-r.height}px`;
+  btn.appendChild(rip);setTimeout(()=>rip.remove(),700);
+  const data={amount:$('amount').value,txType:$('txType').value,location:$('location').value,hour:$('hour').value,device:$('device').value,txFreq:$('txFreq').value,accAge:$('accAge').value,failedAttempts:$('failedAttempts').value,newDevice:$('newDevice').checked};
+  if(isMobile())mobileTab('result');
+  showScreen('loading');btn.disabled=true;startLoader();
+  // Try server first, fallback to local
+  const fd=new FormData();
+  fd.append('amount',data.amount);fd.append('transaction_type',data.txType);fd.append('location',data.location);
+  fd.append('transaction_hour',data.hour);fd.append('device_type',data.device);fd.append('transaction_freq',data.txFreq);
+  fd.append('account_age_days',data.accAge);fd.append('failed_attempts',data.failedAttempts);
+  if(data.newDevice)fd.append('is_new_device','on');
+  fetch('/predict',{method:'POST',body:fd}).then(r=>r.ok?r.json():Promise.reject()).then(res=>{
+    lastResult={score:res.fraud_score,reasons:res.reasons,advice:res.advice||[],breakdown:res.breakdown};
+    stopLoader();setTimeout(()=>{renderResult(lastResult);btn.disabled=false;},300);
+  }).catch(()=>{
+    // Local fallback
+    setTimeout(()=>{const result=analyseLocal(data);lastResult=result;stopLoader();setTimeout(()=>{renderResult(result);btn.disabled=false;},300);},2800);
+  });
 });
 
-/* ═══════════ RESET ═══════════ */
-$('resetBtn').onclick = () => {
-  showScreen('idle');
-  if (isMobile()) activateTab('form');
+$('resetBtn').onclick=()=>{showScreen('idle');if(isMobile())mobileTab('form');};
+
+/* ═══════════ DOWNLOAD REPORT ═══════════ */
+$('reportBtn').onclick=()=>{
+  if(!lastResult)return;
+  const r=lastResult,risk=getRiskLevel(r.score),theme=body.dataset.theme;
+  const ts={default:{bg:'#0a0c10',card:'#111318',text:'#e8eaf0',accent:'#4f8fff'},cyber:{bg:'#050810',card:'#0c1020',text:'#e6f7ff',accent:'#00d4ff'},neon:{bg:'#08040f',card:'#130d1e',text:'#f3e8ff',accent:'#c84bff'},arctic:{bg:'#f0f4fa',card:'#ffffff',text:'#1a2033',accent:'#2563eb'}};
+  const t=ts[theme]||ts.default;
+  const html=`<div style="font-family:Arial,sans-serif;padding:30px;background:${t.bg};color:${t.text};min-height:100vh;"><h1 style="color:${t.accent};margin-bottom:10px;">FraudGuard AI Report</h1><div style="background:${t.card};padding:20px;border-radius:10px;margin-bottom:20px;"><h2>Fraud Score: ${r.score}/100</h2><h3 style="color:${t.accent};">${risk.label}</h3></div><div style="background:${t.card};padding:20px;border-radius:10px;margin-bottom:20px;"><h3>Risk Indicators</h3><ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul></div><div style="background:${t.card};padding:20px;border-radius:10px;"><h3>Recommendations</h3><ul>${r.advice.map(x=>`<li>${x}</li>`).join('')}</ul></div><p style="margin-top:20px;font-size:12px;">Generated: ${new Date().toLocaleString()}</p></div>`;
+  html2pdf().set({margin:.5,filename:'fraud_report.pdf',image:{type:'jpeg',quality:.98},html2canvas:{scale:2},jsPDF:{unit:'in',format:'a4',orientation:'portrait'}}).from(html).save();
 };
 
-/* ═══════════ DOWNLOAD REPORT (PDF) ═══════════ */
-$('reportBtn').onclick = () => {
-  if (!lastResult) return;
-  const r = lastResult, risk = getRiskLevel(r.score);
-  const theme = body.dataset.theme;
-  const ts = {
-    default:{bg:'#0a0c10',card:'#111318',text:'#e8eaf0',accent:'#4f8fff'},
-    cyber:  {bg:'#050810',card:'#0c1020',text:'#e6f7ff',accent:'#00d4ff'},
-    neon:   {bg:'#08040f',card:'#130d1e',text:'#f3e8ff',accent:'#c84bff'},
-    arctic: {bg:'#f0f4fa',card:'#ffffff',text:'#1a2033',accent:'#2563eb'}
-  };
-  const t = ts[theme] || ts.default;
-  const html = `<div style="font-family:Arial,sans-serif;padding:30px;background:${t.bg};color:${t.text};min-height:100vh;">
-    <h1 style="color:${t.accent};margin-bottom:10px;">FraudGuard AI Report</h1>
-    <div style="background:${t.card};padding:20px;border-radius:10px;margin-bottom:20px;">
-      <h2>Fraud Score: ${r.score}/100</h2>
-      <h3 style="color:${t.accent};">${risk.label}</h3>
-    </div>
-    <div style="background:${t.card};padding:20px;border-radius:10px;margin-bottom:20px;">
-      <h3>Risk Indicators</h3><ul>${r.reasons.map(x=>`<li>${x}</li>`).join('')}</ul>
-    </div>
-    <div style="background:${t.card};padding:20px;border-radius:10px;">
-      <h3>Recommendations</h3><ul>${r.advice.map(x=>`<li>${x}</li>`).join('')}</ul>
-    </div>
-    <p style="margin-top:20px;font-size:12px;">Generated: ${new Date().toLocaleString()}</p>
-  </div>`;
-  html2pdf().set({margin:.5,filename:'fraud_report.pdf',image:{type:'jpeg',quality:.98},
-    html2canvas:{scale:2},jsPDF:{unit:'in',format:'a4',orientation:'portrait'}})
-    .from(html).save();
+/* ═══════════════════════════════════════════════
+   BANK ACCOUNT CONNECT — DEMO ENGINE
+═══════════════════════════════════════════════ */
+const BANKS=[
+  {id:'sbi',name:'State Bank of India',logo:'🏦',type:'Public'},
+  {id:'hdfc',name:'HDFC Bank',logo:'🟠',type:'Private'},
+  {id:'icici',name:'ICICI Bank',logo:'🔵',type:'Private'},
+  {id:'axis',name:'Axis Bank',logo:'🟣',type:'Private'},
+  {id:'kotak',name:'Kotak Mahindra',logo:'🔴',type:'Private'},
+  {id:'pnb',name:'Punjab National',logo:'🟡',type:'Public'},
+  {id:'bob',name:'Bank of Baroda',logo:'🟤',type:'Public'},
+  {id:'chase',name:'Chase Bank',logo:'🔷',type:'US'},
+  {id:'hsbc',name:'HSBC',logo:'🔺',type:'Global'},
+  {id:'citi',name:'Citibank',logo:'💙',type:'US'},
+  {id:'barclays',name:'Barclays',logo:'🦅',type:'UK'},
+  {id:'revolut',name:'Revolut',logo:'⚡',type:'Digital'},
+];
+
+let selectedBank=null, connectedBank=null;
+
+// Build bank grid
+const bankGrid=$('bankGrid');
+BANKS.forEach(bank=>{
+  const card=document.createElement('div');
+  card.className='bank-card';
+  card.id='bankCard_'+bank.id;
+  card.innerHTML=`
+    <div class="bank-check"><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L4 7L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="bank-logo">${bank.logo}</div>
+    <div class="bank-name">${bank.name}</div>
+    <div class="bank-type">${bank.type}</div>`;
+  card.onclick=()=>selectBank(bank);
+  bankGrid.appendChild(card);
+});
+
+function selectBank(bank){
+  selectedBank=bank;
+  document.querySelectorAll('.bank-card').forEach(c=>c.classList.remove('selected'));
+  $('bankCard_'+bank.id).classList.add('selected');
+  $('connectFormBlock').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* Demo transaction data */
+function generateDemoTransactions(bank){
+  const merchants=['Amazon','Netflix','Uber','Swiggy','Zomato','Flipkart','Apple','Google Pay','Jio','BPCL Petrol','ATM Withdrawal','Salary Credit','Rent Transfer','Medical Store'];
+  const locs=['local','domestic','international','high_risk','vpn','tor'];
+  const types=['online_purchase','pos_payment','bank_transfer','atm_withdrawal','crypto_transfer'];
+  const devices=['mobile','desktop','tablet','atm','unknown'];
+  return Array.from({length:12},(_,i)=>{
+    const isHigh=Math.random()<0.25;
+    const isCritical=Math.random()<0.08;
+    const tx={
+      id:'TX'+Date.now()+i,
+      merchant:merchants[Math.floor(Math.random()*merchants.length)],
+      amount:(isHigh?(Math.random()*8000+2000):(Math.random()*500+10)).toFixed(2),
+      location:isCritical?locs[Math.floor(Math.random()*3)+3]:(isHigh?locs[2]:locs[Math.floor(Math.random()*2)]),
+      txType:types[Math.floor(Math.random()*types.length)],
+      device:isCritical?devices[4]:(isHigh?devices[Math.floor(Math.random()*3)]:devices[Math.floor(Math.random()*2)]),
+      hour:isCritical?Math.floor(Math.random()*4):(isHigh?Math.floor(Math.random()*24):Math.floor(Math.random()*14)+8),
+      txFreq:isCritical?Math.floor(Math.random()*10)+10:Math.floor(Math.random()*5)+1,
+      accAge:Math.floor(Math.random()*1000)+30,
+      failedAttempts:isCritical?Math.floor(Math.random()*4)+2:(isHigh?Math.floor(Math.random()*2):0),
+      newDevice:isCritical?true:Math.random()<0.15,
+      date:new Date(Date.now()-i*3600000*Math.random()*8).toLocaleString(),
+      riskResult:null
+    };
+    // Score it
+    const r=analyseLocal({amount:tx.amount,location:tx.location,txType:tx.txType,device:tx.device,hour:tx.hour,txFreq:tx.txFreq,accAge:tx.accAge,failedAttempts:tx.failedAttempts,newDevice:tx.newDevice});
+    tx.riskResult=r;
+    return tx;
+  });
+}
+
+function renderTxList(txs){
+  const list=$('txList');
+  list.innerHTML='';
+  let flagged=0,safe=0;
+  txs.forEach(tx=>{
+    const risk=getRiskLevel(tx.riskResult.score);
+    if(risk.level==='high'||risk.level==='critical')flagged++;
+    else if(risk.level==='safe'||risk.level==='low')safe++;
+    const item=document.createElement('div');
+    item.className='tx-item';
+    item.innerHTML=`
+      <div class="tx-icon">${getTypeIcon(tx.txType)}</div>
+      <div class="tx-info">
+        <div class="tx-merchant">${tx.merchant}</div>
+        <div class="tx-meta">${tx.date} · ${tx.location}</div>
+      </div>
+      <div class="tx-right">
+        <div class="tx-amount">$${parseFloat(tx.amount).toLocaleString()}</div>
+        <div class="tx-risk-badge ${risk.level}">${risk.label}</div>
+      </div>
+      <button class="tx-analyse-btn" data-id="${tx.id}">Analyse →</button>`;
+    item.querySelector('.tx-analyse-btn').onclick=(e)=>{
+      e.stopPropagation();
+      analyseFromTx(tx);
+    };
+    item.onclick=()=>analyseFromTx(tx);
+    list.appendChild(item);
+  });
+  $('statTotal').textContent=txs.length;
+  $('statFlagged').textContent=flagged;
+  $('statSafe').textContent=safe;
+}
+
+function getTypeIcon(type){
+  const icons={online_purchase:'🛒',atm_withdrawal:'🏧',bank_transfer:'🏦',pos_payment:'💳',crypto_transfer:'₿'};
+  return icons[type]||'💸';
+}
+
+function analyseFromTx(tx){
+  // Switch to manual tab and populate form, then analyse
+  if(isMobile()){
+    mobileTab('result');
+  } else {
+    switchMainTab('manual');
+    $('tabManual').classList.add('active'); $('tabBank').classList.remove('active');
+  }
+  showScreen('loading'); startLoader();
+  const r=tx.riskResult||analyseLocal(tx);
+  lastResult=r;
+  setTimeout(()=>{
+    stopLoader();
+    setTimeout(()=>{renderResult(r);},300);
+  },1400);
+}
+
+/* Connect flow */
+$('connectBankBtn').onclick=()=>{
+  if(!selectedBank){alert('Please select a bank first.');return;}
+  const accNum=$('bankAccNum').value.trim();
+  const holder=$('bankHolder').value.trim();
+  if(!accNum||!holder){alert('Please enter account number and holder name.');return;}
+
+  const btn=$('connectBankBtn');
+  btn.disabled=true;btn.textContent='Connecting…';
+
+  // Simulate OAuth / connection delay
+  setTimeout(()=>{
+    connectedBank=selectedBank;
+    // Show connected state
+    $('bankHeroSection').classList.add('hidden');
+    $('bankSelectSection').classList.add('hidden');
+    $('connectedBankDisplay').classList.remove('hidden');
+    $('bankStats').classList.remove('hidden');
+    $('txListSection').classList.remove('hidden');
+    $('connectedBankLogo').textContent=selectedBank.logo;
+    $('connectedBankName').textContent=selectedBank.name;
+    $('connectedBankAcc').textContent='****  ****  ****  '+accNum.slice(-4).padStart(4,'*');
+    const txs=generateDemoTransactions(selectedBank);
+    renderTxList(txs);
+    btn.disabled=false;btn.textContent='Connect Securely';
+  },2200);
 };
 
-/* ═══════════════════════════════════════
+// Refresh transactions
+$('refreshTxBtn').onclick=()=>{
+  if(!connectedBank)return;
+  const btn=$('refreshTxBtn');btn.classList.add('spinning');
+  setTimeout(()=>{
+    const txs=generateDemoTransactions(connectedBank);
+    renderTxList(txs);btn.classList.remove('spinning');
+  },1000);
+};
+
+// Disconnect
+$('disconnectBtn').onclick=()=>{
+  if(!confirm('Disconnect bank account?'))return;
+  connectedBank=null;selectedBank=null;
+  $('connectedBankDisplay').classList.add('hidden');
+  $('bankStats').classList.add('hidden');
+  $('txListSection').classList.add('hidden');
+  $('bankHeroSection').classList.remove('hidden');
+  $('bankSelectSection').classList.remove('hidden');
+  document.querySelectorAll('.bank-card').forEach(c=>c.classList.remove('selected'));
+  $('bankAccNum').value='';$('bankHolder').value='';$('bankUserId').value='';$('bankPass').value='';
+};
+
+/* ═══════════════════════════════════════════════
    CHATBOT ENGINE
-════════════════════════════════════════*/
+═══════════════════════════════════════════════ */
 (function(){
   'use strict';
-  const bubble=document.getElementById('fg-bubble');
-  const win=document.getElementById('fg-window');
-  const msgs=document.getElementById('fg-messages');
-  const input=document.getElementById('fg-input');
-  const sendBtn=document.getElementById('fg-send');
-  const closeBtn=document.getElementById('fg-close');
-  const cbHeader=document.getElementById('fg-header');
-  const notif=document.getElementById('fg-notif');
+  const bubble=$('fg-bubble'),win=$('fg-window'),msgs=$('fg-messages');
+  const input=$('fg-input'),sendBtn=$('fg-send'),closeBtn=$('fg-close');
+  const cbHeader=$('fg-header-cb'),notif=$('fg-notif');
   const chips=document.querySelectorAll('.fg-chip');
   let isOpen=false,isThinking=false;
 
-  function toggleChat(){
-    isOpen=!isOpen;
-    win.classList.toggle('visible',isOpen);
-    bubble.classList.toggle('open',isOpen);
-    if(notif)notif.remove();
-    if(isOpen)setTimeout(()=>input.focus(),350);
-  }
+  function toggleChat(){isOpen=!isOpen;win.classList.toggle('visible',isOpen);bubble.classList.toggle('open',isOpen);if(notif)notif.remove();if(isOpen)setTimeout(()=>input.focus(),350);}
   bubble.addEventListener('click',toggleChat);
   closeBtn.addEventListener('click',e=>{e.stopPropagation();toggleChat();});
 
-  function addBotMsg(html,delay=0){
-    return new Promise(res=>{
-      setTimeout(()=>{
-        const d=document.createElement('div');
-        d.className='fg-msg bot';
-        d.innerHTML=`<div class="fg-msg-avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><div class="fg-bubble-text">${html}</div>`;
-        msgs.appendChild(d);scrollBottom();res();
-      },delay);
-    });
-  }
-  function addUserMsg(text){
-    const d=document.createElement('div');
-    d.className='fg-msg user';
-    d.innerHTML=`<div class="fg-msg-avatar" style="background:linear-gradient(135deg,#4f8fff,#2541a0)"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><div class="fg-bubble-text">${esc(text)}</div>`;
-    msgs.appendChild(d);scrollBottom();
-  }
-  function addTyping(){
-    const d=document.createElement('div');d.className='fg-msg bot';d.id='fg-typing-row';
-    d.innerHTML=`<div class="fg-msg-avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><div class="fg-typing"><span></span><span></span><span></span></div>`;
-    msgs.appendChild(d);scrollBottom();
-  }
-  function removeTyping(){const t=document.getElementById('fg-typing-row');if(t)t.remove();}
+  function addBotMsg(html,delay=0){return new Promise(res=>{setTimeout(()=>{const d=document.createElement('div');d.className='fg-msg bot';d.innerHTML=`<div class="fg-msg-avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><div class="fg-bubble-text">${html}</div>`;msgs.appendChild(d);scrollBottom();res();},delay);});}
+  function addUserMsg(text){const d=document.createElement('div');d.className='fg-msg user';d.innerHTML=`<div class="fg-msg-avatar" style="background:linear-gradient(135deg,#4f8fff,#2541a0)"><svg width="11" height="11" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div><div class="fg-bubble-text">${esc(text)}</div>`;msgs.appendChild(d);scrollBottom();}
+  function addTyping(){const d=document.createElement('div');d.className='fg-msg bot';d.id='fg-typing-row';d.innerHTML=`<div class="fg-msg-avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><div class="fg-typing"><span></span><span></span><span></span></div>`;msgs.appendChild(d);scrollBottom();}
+  function removeTyping(){const t=$('fg-typing-row');if(t)t.remove();}
   function scrollBottom(){setTimeout(()=>msgs.scrollTop=msgs.scrollHeight,60);}
   function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
   function parseNL(text){
     const t=text.toLowerCase(),ex={};
-    const amtAll=[...t.matchAll(/\$?([\d,]+(?:\.\d+)?)\s*k?\b/gi)]
-      .map(m=>parseFloat(m[1].replace(/,/g,''))*(m[0].toLowerCase().endsWith('k')?1000:1))
-      .filter(v=>v>0);
-    ex.amount  = amtAll.length>=2?Math.max(...amtAll):(amtAll[0]||500);
+    const amtAll=[...t.matchAll(/\$?([\d,]+(?:\.\d+)?)\s*k?\b/gi)].map(m=>parseFloat(m[1].replace(/,/g,''))*(m[0].toLowerCase().endsWith('k')?1000:1)).filter(v=>v>0);
+    ex.amount=amtAll.length>=2?Math.max(...amtAll):(amtAll[0]||500);
     ex.avgAmount=amtAll.length>=2?Math.min(...amtAll):0;
     ex.spikeRatio=ex.avgAmount>0?(ex.amount/ex.avgAmount):1;
-    ex.txType  =/crypto|bitcoin|btc|eth/i.test(t)?'crypto_transfer':/wire|bank.transfer|swift/i.test(t)?'bank_transfer':/atm|withdraw/i.test(t)?'atm_withdrawal':'online_purchase';
+    ex.txType=/crypto|bitcoin|btc|eth/i.test(t)?'crypto_transfer':/wire|bank.transfer|swift/i.test(t)?'bank_transfer':/atm|withdraw/i.test(t)?'atm_withdrawal':'online_purchase';
     ex.location=/tor|onion/i.test(t)?'tor':/vpn|proxy/i.test(t)?'vpn':/high.risk|sanction/i.test(t)?'high_risk':/international|abroad|foreign/i.test(t)?'international':'domestic';
     const hr=t.match(/(\d{1,2})\s*(?:am|pm)/i);
     ex.hour=hr?((parseInt(hr[1])%12)+(/pm/i.test(t)?12:0)):/midnight|3am|2am|1am|4am/i.test(t)?2:/night|evening/i.test(t)?22:14;
@@ -1233,52 +1250,26 @@ $('reportBtn').onclick = () => {
     return ex;
   }
 
-  function scoreFraud(p){
-    let score=0;const reasons=[];
-    if(p.spikeRatio>=50){score+=40;reasons.push(`Extreme ${p.spikeRatio.toFixed(0)}× amount spike`);}
-    else if(p.spikeRatio>=10){score+=28;reasons.push(`High ${p.spikeRatio.toFixed(0)}× amount spike`);}
-    else if(p.spikeRatio>=3){score+=15;reasons.push(`${p.spikeRatio.toFixed(1)}× above average`);}
-    if(p.amount>50000){score+=22;reasons.push(`Very large: $${p.amount.toLocaleString()}`);}
-    else if(p.amount>10000){score+=15;reasons.push(`Large amount: $${p.amount.toLocaleString()}`);}
-    const lR={tor:35,vpn:22,high_risk:28,international:14,domestic:4,local:0};
-    const lM={tor:'TOR — extreme risk',vpn:'VPN — masked origin',high_risk:'High-risk origin',international:'International origin'};
-    score+=(lR[p.location]||0);if(lM[p.location])reasons.push(lM[p.location]);
-    if(p.hour>=0&&p.hour<=4){score+=18;reasons.push(`Odd hour: ${p.hour}:00 AM`);}
-    else if(p.hour>=22){score+=10;reasons.push('Late-night transaction');}
-    if(p.txType==='crypto_transfer'){score+=18;reasons.push('Crypto transfer');}
-    if(p.device==='unknown'){score+=20;reasons.push('Unknown device');}
-    if(p.txFreq>=20){score+=22;reasons.push(`Very high velocity: ${p.txFreq} txns`);}
-    else if(p.txFreq>=10){score+=12;reasons.push(`High frequency: ${p.txFreq} txns`);}
-    if(p.accAge<15){score+=20;reasons.push(`Account only ${p.accAge} days old`);}
-    else if(p.accAge<30){score+=15;reasons.push(`New account: ${p.accAge} days`);}
-    if(p.failedAttempts>=5){score+=25;reasons.push(`${p.failedAttempts} failed attempts`);}
-    else if(p.failedAttempts>=3){score+=15;reasons.push(`${p.failedAttempts} failed attempts`);}
-    if(p.newDevice){score+=15;reasons.push('New/unrecognised device');}
-    score=Math.min(Math.round(score),100);
-    if(!reasons.length)reasons.push('No major indicators found.');
-    const verdict=score>=60?'FRAUDULENT':score>=45?'SUSPICIOUS':'LEGITIMATE';
-    const riskLevel=score>=60?'HIGH':score>=45?'MEDIUM':'LOW';
-    return{score,verdict,riskLevel,reasons,
-      breakdown:{isolation_forest:Math.min(score+Math.round((Math.random()-.3)*12),100),
-                 lof:Math.min(score+Math.round((Math.random()-.3)*10),100),
-                 rules:Math.min(score+Math.round((Math.random()-.3)*8),100)}};
+  function scoreCB(p){
+    const r=analyseLocal({amount:p.amount,location:p.location,txType:p.txType,device:p.device,hour:p.hour,txFreq:p.txFreq,accAge:p.accAge,failedAttempts:p.failedAttempts,newDevice:p.newDevice});
+    if(p.spikeRatio>=50)r.score=Math.min(r.score+40,100);
+    else if(p.spikeRatio>=10)r.score=Math.min(r.score+20,100);
+    r.score=Math.min(Math.round(r.score),100);
+    const verdict=r.score>=60?'FRAUDULENT':r.score>=45?'SUSPICIOUS':'LEGITIMATE';
+    return{...r,verdict,riskLevel:r.score>=60?'HIGH':r.score>=45?'MEDIUM':'LOW'};
   }
 
   function buildCard(res){
-    const{score,verdict,riskLevel,reasons,breakdown}=res;
+    const{score,verdict}=res;
     const clr=score>=60?'#ff4757':score>=45?'#ffa502':'#2ed573';
     const pillBg=score>=60?'rgba(255,71,87,.15)':score>=45?'rgba(255,165,2,.15)':'rgba(46,213,115,.12)';
     const icon=score>=60?'🚨':score>=45?'⚠️':'✅';
-    const bars=[{name:'IF',val:breakdown.isolation_forest},{name:'LOF',val:breakdown.lof},{name:'Rules',val:breakdown.rules}]
-      .map(b=>{const bc=b.val>=60?'#ff4757':b.val>=45?'#ffa502':'#2ed573';
-        return`<div class="fg-mini-bar"><div class="fg-mini-bar-label"><span>${b.name}</span><span style="color:${bc}">${b.val}</span></div><div class="fg-mini-bar-track"><div class="fg-mini-bar-fill" style="width:0%;background:${bc}" data-target="${b.val}"></div></div></div>`;
-      }).join('');
-    return`<div class="fg-result-card" style="border-color:${clr}44"><div class="fg-score-row"><div class="fg-score-badge" style="color:${clr}">${icon} ${score}</div><div><div class="fg-verdict-pill" style="color:${clr};background:${pillBg};border:1px solid ${clr}44">${verdict}</div><div style="font-size:8px;color:var(--cb-text2);margin-top:2px;font-family:'JetBrains Mono',monospace">RISK: ${riskLevel}</div></div></div>${bars}<div class="fg-reasons-list">${reasons.slice(0,3).map(r=>`<div class="fg-reason-li">${esc(r)}</div>`).join('')}</div></div>`;
+    const bars=[{name:'IF',val:res.breakdown.isolation_forest},{name:'LOF',val:res.breakdown.lof},{name:'Rules',val:res.breakdown.rules}]
+      .map(b=>{const bc=b.val>=60?'#ff4757':b.val>=45?'#ffa502':'#2ed573';return`<div style="margin-bottom:4px"><div style="display:flex;justify-content:space-between;font-size:9px;color:#8892a4;margin-bottom:2px;font-family:'JetBrains Mono',monospace"><span>${b.name}</span><span style="color:${bc}">${b.val}</span></div><div style="height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden"><div style="width:${b.val}%;height:100%;background:${bc};border-radius:2px"></div></div></div>`;}).join('');
+    return`<div style="background:#181d2a;border:1px solid ${clr}44;border-radius:9px;padding:9px;margin-top:5px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px"><div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:${clr}">${icon} ${score}</div><div><div style="padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:${clr};background:${pillBg};border:1px solid ${clr}44">${verdict}</div></div></div>${bars}<div style="margin-top:5px">${res.reasons.slice(0,3).map(r=>`<div style="font-size:10px;color:#8892a4;margin-bottom:2px;display:flex;align-items:flex-start;gap:4px"><span style="color:#00C9A7;flex-shrink:0">▸</span>${esc(r)}</div>`).join('')}</div></div>`;
   }
 
-  function isRelevant(text){
-    return /transaction|transfer|payment|spend|amount|\$|money|account|bank|crypto|atm|fraud|risk|card|sent|received|average|spike|frequency|failed|\d/.test(text.toLowerCase());
-  }
+  function isRelevant(text){return /transaction|transfer|payment|spend|amount|\$|money|account|bank|crypto|atm|fraud|risk|card|sent|received|average|spike|frequency|failed|\d/.test(text.toLowerCase());}
 
   async function handleSend(){
     const text=input.value.trim();
@@ -1286,16 +1277,16 @@ $('reportBtn').onclick = () => {
     input.value='';input.style.height='auto';
     isThinking=true;sendBtn.disabled=true;
     addUserMsg(text);
-    document.getElementById('fg-quick').style.display='none';
+    $('fg-quick').style.display='none';
     addTyping();cbHeader.classList.add('fg-scanning');
     if(!isRelevant(text)){
       await new Promise(r=>setTimeout(r,1000));
       removeTyping();cbHeader.classList.remove('fg-scanning');
-      await addBotMsg(`🤔 I specialise in <b>fraud analysis</b>. Try: <i>"Average $300 but today $15,000 crypto transfer."</i>`);
+      await addBotMsg(`🤔 I specialise in <b>fraud analysis</b>. Try: <i>"Average $300, today $15,000 crypto."</i>`);
       isThinking=false;sendBtn.disabled=false;return;
     }
     await new Promise(r=>setTimeout(r,1400+Math.random()*700));
-    const params=parseNL(text),result=scoreFraud(params);
+    const params=parseNL(text),result=scoreCB(params);
     removeTyping();cbHeader.classList.remove('fg-scanning');
     const opener=result.score>=70?'🚨 <b>Highly fraudulent!</b>':result.score>=60?'🔴 <b>HIGH risk.</b>':result.score>=45?'⚠️ <b>Suspicious.</b>':'✅ <b>Low risk.</b>';
     await addBotMsg(opener+' Score: <b>'+result.score+'/100</b>.');
@@ -1304,9 +1295,8 @@ $('reportBtn').onclick = () => {
     cardDiv.className='fg-msg bot';
     cardDiv.innerHTML=`<div class="fg-msg-avatar"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div><div style="flex:1">${buildCard(result)}</div>`;
     msgs.appendChild(cardDiv);scrollBottom();
-    setTimeout(()=>{cardDiv.querySelectorAll('.fg-mini-bar-fill').forEach(b=>b.style.width=b.dataset.target+'%');},200);
     await new Promise(r=>setTimeout(r,500));
-    await addBotMsg('Need another analysis? Just describe any transaction! 🔍');
+    await addBotMsg('Need another analysis? Describe any transaction! 🔍');
     isThinking=false;sendBtn.disabled=false;input.focus();
   }
 
@@ -1314,9 +1304,7 @@ $('reportBtn').onclick = () => {
   input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleSend();}});
   input.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,72)+'px';});
   chips.forEach(chip=>{chip.addEventListener('click',()=>{input.value=chip.dataset.msg;input.dispatchEvent(new Event('input'));input.focus();});});
-
-  /* Welcome */
-  addBotMsg(`👋 Hi! I'm <b>FraudGuard AI</b>.<br>Describe a transaction in plain English and I'll analyse the fraud risk. 🔍`);
+  addBotMsg(`👋 Hi! I'm <b>FraudGuard AI</b>.<br>Describe a transaction or <b>connect your bank</b> to auto-scan transactions. 🔍`);
 })();
 </script>
 </body>
